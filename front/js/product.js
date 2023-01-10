@@ -53,7 +53,10 @@ const addToCartButton = document.querySelector('#addToCart');
 // Définir les éléments du tableau 
 let productColor = selectColor.value;
 let productQuantity = selectQuantity.value;
-
+/* définir boucle pour le prix multiplié par le nb d'articles
+for (i=0; i < data.price.length; i++) {
+    let priceFinal = 
+}*/
 // Modifier le tableau en ajoutant des eventlistener quand l'utilisateur choisi une couleur ou un nombre d'articles
 selectColor.addEventListener("input", e => productColor = e.target.value);
 selectQuantity.addEventListener("input", e => productQuantity = e.target.value);
@@ -65,7 +68,7 @@ addToCartButton.addEventListener("click", (event) => {
         id: productId,
         color: productColor,
         quantity: Number(productQuantity),
-        // price: priceElement.value
+        // price: priceElement.textContent
     }
     if (productColor == '') {
         alert('Veuillez sélectionner une couleur')
@@ -73,7 +76,10 @@ addToCartButton.addEventListener("click", (event) => {
         alert('Veuillez indiquer un nombre d\'articles')
     } else if (productQuantity > 100) {
         alert('Veuillez indiquer un nombre d\'articles inférieur à 100')
-    } //else ajouter la future fonction qui affiche la page panier 
+    } else {
+        addProductConfirm(productDetails)
+    }
+    //ajouter la future fonction qui affiche la page panier ?
 
     // Convertir les clés et valeurs de l'objet en string 
     window.localStorage.setItem("productDetails", JSON.stringify(productDetails));
@@ -83,9 +89,25 @@ addToCartButton.addEventListener("click", (event) => {
     console.log(JSON.parse(addProductDetails));
 });
 
-// function addToCart (productDetails) {}
+// Créer un message pour confirmer que le produit a bien été ajouté au panier
+let addProductConfirm = () => {
+    alert('Le produit a bien été ajouté au panier')
+}
+
+// Définir le contenu du panier 
+let basket = 
+
+// Créer une fonction pour l'ajout du/des produit(s) sélectionné(s) par l'utilisateur dans le panier
+//function addToCart(productDetails) {}
+
+
+
+
 
 // Récupérer les données choisies par l'utilisateur au moment du click (couleur et quantité)
+
+// Redirection sur une url relative cart.html une fois qu'on a ajouté au panier ?
+//window.location.href = "cart.html"
         
 
 
