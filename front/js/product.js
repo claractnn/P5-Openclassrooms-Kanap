@@ -83,9 +83,7 @@ addToCartButton.addEventListener("click", (event) => {
     console.log(JSON.parse(addProductDetails));
 });
 
-function addToCart (productDetails) {
-    
-}
+// function addToCart (productDetails) {}
 
 // Récupérer les données choisies par l'utilisateur au moment du click (couleur et quantité)
         
