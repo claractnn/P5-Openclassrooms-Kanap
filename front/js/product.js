@@ -1,11 +1,11 @@
-// Récupérer l'id du produit dans l'Url 
+// RÉCUPÉRER L'ID DU PRODUIT DANS L'URL
 
 // Créer une nouvelle URL à partir de l'URL donnée et ajouter searchParams pour manipuler les paramètres de requête d'URL 
 let params = (new URL(document.location)).searchParams;
 
 // Ajouter l'id à l'Url 
-const productId = params.get('id');
-const apiProductUrl = 'http://localhost:3000/api/products/' + productId;
+const id = params.get('id');
+const apiProductUrl = 'http://localhost:3000/api/products/' + id;
 console.log(apiProductUrl)
 
 // Créer toutes les constantes du produit 
@@ -51,37 +51,39 @@ let selectQuantity = document.getElementById('quantity');
 const addToCartButton = document.querySelector('#addToCart');
 
 // Définir les éléments du tableau 
-let productColor = selectColor.value;
-let productQuantity = selectQuantity.value;
+let color = selectColor.value;
+let quantity = selectQuantity.value;
+
 /* définir boucle pour le prix multiplié par le nb d'articles
 for (i=0; i < data.price.length; i++) {
     let priceFinal = 
 }*/
-// Modifier le tableau en ajoutant des eventlistener quand l'utilisateur choisi une couleur ou un nombre d'articles
-selectColor.addEventListener("input", e => productColor = e.target.value);
-selectQuantity.addEventListener("input", e => productQuantity = e.target.value);
 
-// Créer un eventListener pour le bouton "ajouter au panier" avec certaines instructions 
+// Modifier le tableau en ajoutant des eventlistener quand l'utilisateur choisi une couleur ou un nombre d'articles
+selectColor.addEventListener("input", e => color = e.target.value);
+selectQuantity.addEventListener("input", e => quantity = e.target.value);
+
+// Créer un eventListener pour le bouton "ajouter au panier" avec certaines conditions 
 addToCartButton.addEventListener("click", (event) => {
     // Créer un objet avec tous les éléments du produit 
     let productDetails = {
-        id: productId,
-        color: productColor,
-        quantity: Number(productQuantity),
+        id: id,
+        color: color,
+        quantity: Number(quantity),
         // price: priceElement.textContent
     }
-    if (productColor == '') {
+    if (color == '') {
         alert('Veuillez sélectionner une couleur')
-    } else if (productQuantity < 1 || productQuantity == NaN) {
+    } else if (quantity < 1 || quantity == NaN) {
         alert('Veuillez indiquer un nombre d\'articles')
-    } else if (productQuantity > 100) {
+    } else if (quantity > 100) {
         alert('Veuillez indiquer un nombre d\'articles inférieur à 100')
     } else {
         addProductConfirm(productDetails)
     }
     //ajouter la future fonction qui affiche la page panier ?
 
-    // Convertir les clés et valeurs de l'objet en string 
+    // Convertir les clés et valeurs de l'objet en string (car localStorage ne peut pas storer d'objet, renvoie : "[object Object]") 
     window.localStorage.setItem("productDetails", JSON.stringify(productDetails));
 
     // Créer une variable pour récupérer l'objet (parse the string) 
@@ -95,7 +97,7 @@ let addProductConfirm = () => {
 }
 
 // Définir le contenu du panier 
-let basket = 
+//let basket = 
 
 // Créer une fonction pour l'ajout du/des produit(s) sélectionné(s) par l'utilisateur dans le panier
 //function addToCart(productDetails) {}
