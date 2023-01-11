@@ -41,6 +41,7 @@ fetch(apiProductUrl)
         alert("Le serveur ne répond plus");
     });
 
+    
 // AJOUT DES PRODUITS DANS LE PANIER
 
 // Définir les éléments d'un produit sélectionné par l'utilisateur
