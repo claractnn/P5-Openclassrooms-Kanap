@@ -47,30 +47,25 @@ fetch(apiProductUrl)
 let selectColor = document.getElementById("colors");
 let selectQuantity = document.getElementById('quantity');
 
-// Créer une constante pour le bouton "ajouter au panier"
-const addToCartButton = document.querySelector('#addToCart');
-
 // Définir les éléments du tableau 
 let color = selectColor.value;
 let quantity = selectQuantity.value;
-
-/* définir boucle pour le prix multiplié par le nb d'articles
-for (i=0; i < data.price.length; i++) {
-    let priceFinal = 
-}*/
 
 // Modifier le tableau en ajoutant des eventlistener quand l'utilisateur choisi une couleur ou un nombre d'articles
 selectColor.addEventListener("input", e => color = e.target.value);
 selectQuantity.addEventListener("input", e => quantity = e.target.value);
 
+// Créer une variable pour le bouton "ajouter au panier"
+const button = document.querySelector('#addToCart');
+
 // Créer un eventListener pour le bouton "ajouter au panier" avec certaines conditions 
-addToCartButton.addEventListener("click", (event) => {
+button.addEventListener("click", (event) => {
     // Créer un objet avec tous les éléments du produit 
     let productDetails = {
         id: id,
         color: color,
         quantity: Number(quantity),
-        // price: priceElement.textContent
+        price: Number(priceElement.textContent)
     }
     if (color == '') {
         alert('Veuillez sélectionner une couleur')
@@ -97,16 +92,14 @@ let addProductConfirm = () => {
 }
 
 // Définir le contenu du panier 
-//let basket = 
-
-// Créer une fonction pour l'ajout du/des produit(s) sélectionné(s) par l'utilisateur dans le panier
-//function addToCart(productDetails) {}
+// let basket =  
 
 
+/* Créer une fonction pour l'ajout du/des produit(s) sélectionné(s) par l'utilisateur dans le panier
+function addToCart(productDetails) {}  */
 
 
 
-// Récupérer les données choisies par l'utilisateur au moment du click (couleur et quantité)
 
 // Redirection sur une url relative cart.html une fois qu'on a ajouté au panier ?
 //window.location.href = "cart.html"
