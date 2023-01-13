@@ -88,9 +88,9 @@ button.addEventListener("click", (event) => {
         alert('Veuillez indiquer un nombre d\'articles inférieur à 100')
     } else if (quantity == 1) {
         alert('Votre produit a bien été ajouté au panier! ')
-    } else {
+    } else if (quantity > 1) {
         alert('Vos produits ont bien été ajouté au panier !')
-    }
+    } // Rediriger vers la page panier
 
     // Convertir les clés et valeurs de l'objet en string (car localStorage ne peut pas storer d'objet, renvoie : "[object Object]") 
     window.localStorage.setItem("panier", JSON.stringify(cart));
@@ -99,6 +99,18 @@ button.addEventListener("click", (event) => {
     let getCart = window.localStorage.getItem("panier");
     console.log(JSON.parse(getCart));
 
+
+    // Créer une fonction qui ajoute un nouvel élément dans le panier si celui est vide
+    function addToCart(id, color, quantity) {
+        if (quantity < 0 || quantity == null && color == "" || color == null) {
+        return
+    } 
+}
+});
+
+
+
+/*
     // Vérifier si le panier est vide si toutes les conditions sont remplies
     let basket = getBasket(); 
     if (cart.lenght == 0) {
@@ -149,7 +161,7 @@ button.addEventListener("click", (event) => {
     }
 
     
-});
+
 
 // Créer un message pour confirmer que le produit a bien été ajouté au panier
 /*
@@ -165,6 +177,7 @@ function addToCart(productDetails) {}  */
 // Redirection sur une url relative cart.html une fois qu'on a ajouté au panier ?
 //window.location.href = "cart.html"
 
+/*
 // Créer une fonction pour enregistrer le panier
 function saveBasket(productInLocalStorage) {
     localStorage.setItem("panier", JSON.stringify(productInLocalStorage))
@@ -182,4 +195,4 @@ function getBasket() {
         return JSON.parse(productInLocalStorage)
     }
 }
-
+*/

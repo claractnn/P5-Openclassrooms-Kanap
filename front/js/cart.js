@@ -1,19 +1,8 @@
 
+// Créer une fonction getCart pour récupérer la cart depuis le localStorage
 
-/*
-let basket = {
-    id: ;
-    quantity: ;
-    color: ;
+/*function getCart() {
+    let cartDetails = [];
+
 }*/
-
-/* 
-let productCartId = ;
-let productCartQuantity = ;
-let productCartColor = ; 
-
-let productCart = [id, quantity, color] {
-    id = ;
-    quantity = document.querySelector('')
-}
-*/
+ 
