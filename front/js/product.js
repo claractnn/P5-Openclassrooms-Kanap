@@ -72,13 +72,6 @@ button.addEventListener("click", (event) => {
     let color = colorValue();
     let quantity = quantityValue();
 
-    // Créer un objet du tableau pour le panier
-    let cart = [{
-        id: id,
-        color: color,
-        quantity: Number(quantity)
-    }];
-
     // Ajouter des conditions si les options du produit n'ont pas été choisies
     if (color == '') {
         alert('Veuillez sélectionner une couleur')
@@ -91,6 +84,13 @@ button.addEventListener("click", (event) => {
     } else if (quantity > 1) {
         alert('Vos produits ont bien été ajouté au panier !')
     } // Rediriger vers la page panier
+
+    // Créer un objet du tableau pour le panier
+    const cart = [{
+        id: id,
+        color: color,
+        quantity: Number(quantity)
+    }];
 
     // Convertir les clés et valeurs de l'objet en string (car localStorage ne peut pas storer d'objet, renvoie : "[object Object]") 
     window.localStorage.setItem("panier", JSON.stringify(cart));
