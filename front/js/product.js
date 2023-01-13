@@ -45,6 +45,17 @@ fetch(apiProductUrl)
     
 // AJOUT DES PRODUITS DANS LE PANIER
 
+// Créer deux fonctions pour récupérer les valeurs respectives des éléments (produits)
+function colorValue() {
+    let color = document.getElementById("colors")
+    return color.value
+}
+
+function quantityValue() {
+    let quantity = document.getElementById("quantity")
+    return quantity.value
+}
+
 // Définir les éléments d'un produit sélectionné par l'utilisateur
 let selectColor = document.getElementById("colors");
 let selectQuantity = document.getElementById('quantity');
