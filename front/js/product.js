@@ -32,9 +32,10 @@ fetch(apiProductUrl)
         const colors = document.getElementById('colors')
 
         for (i = 0; i < data.colors.length; i++) {
-            let productColors = `<option value="${data.colors[i]}">${data.colors[i]}</option>`;
+            colors.innerHTML += `<option value="${data.colors[i]}">${data.colors[i]}</option>`;
+            /*let productColors = `<option value="${data.colors[i]}">${data.colors[i]}</option>`;
             const displayColors = parser.parseFromString(productColors, "text/html");
-            colors.appendChild(displayColors.body.firstChild);
+            colors.appendChild(displayColors.body.firstChild);*/
         }
     })
     .catch(() => {
@@ -74,7 +75,7 @@ button.addEventListener("click", (event) => {
         alert('Veuillez indiquer un nombre d\'articles')
     } else if (quantity > 100) {
         alert('Veuillez indiquer un nombre d\'articles inférieur à 100')
-    } 
+    }
 
     // Convertir les clés et valeurs de l'objet en string (car localStorage ne peut pas storer d'objet, renvoie : "[object Object]") 
     window.localStorage.setItem("panier", JSON.stringify(cart));
@@ -84,8 +85,8 @@ button.addEventListener("click", (event) => {
     console.log(JSON.parse(getCart));
 
     // Vérifier si le panier est vide si toutes les conditions sont remplies
-    let basket = getCart(); 
-    if (basket.lenght == 0) {
+    let basket = getBasket(); 
+    if (cart.lenght == 0) {
         // Créer une fonction qui récupère les éléments du panier 
         function getBasket() {
             // Créer une variable qui définie la récupération des éléments du panier
@@ -93,14 +94,16 @@ button.addEventListener("click", (event) => {
             if (productInLocalStorage == null) {
                 return []
             } else {
-                
+                // Sinon, retourner le contenu du localStorage
+                JSON.parse(productInLocalStorage)
             }
         }
+    };
         // Créer une fonction pour ajouter les éléments du produit choisis dans le panier
         function addBasket(cart) {
             let productInLocalStorage = getBasket();
         }
-    }
+    
 
     if (basket == null || basket.lenght == 0) {
         // Si le panier n'existe pas, le créer en objet dans un tableau 
