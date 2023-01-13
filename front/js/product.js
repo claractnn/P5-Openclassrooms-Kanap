@@ -45,32 +45,32 @@ fetch(apiProductUrl)
     
 // AJOUT DES PRODUITS DANS LE PANIER
 
-// Créer deux fonctions pour récupérer les valeurs respectives des éléments (produits)
+// Créer deux fonctions pour retourner les valeurs respectives des éléments (produits)
 function colorValue() {
-    let color = document.getElementById("colors")
-    return color.value
+    let color = document.getElementById("colors");
+    return color.value;
 }
 
 function quantityValue() {
-    let quantity = document.getElementById("quantity")
-    return quantity.value
+    let quantity = document.getElementById("quantity");
+    return quantity.value;
 }
 
-// Définir les éléments d'un produit sélectionné par l'utilisateur
+/* // Définir les éléments d'un produit sélectionné par l'utilisateur
 let selectColor = document.getElementById("colors");
 let selectQuantity = document.getElementById('quantity');
 
 // Modifier le tableau en ajoutant des eventlistener quand l'utilisateur choisi une couleur ou un nombre d'articles
 selectColor.addEventListener("input", e => color = e.target.value);
-selectQuantity.addEventListener("input", e => quantity = e.target.value);
+selectQuantity.addEventListener("input", e => quantity = e.target.value); */
 
 // Créer une variable pour le bouton "ajouter au panier"
-const button = document.querySelector('#addToCart');
+const button = document.getElementById("addToCart");
 // Créer un eventListener pour le bouton "ajouter au panier"  
 button.addEventListener("click", (event) => {
     // Définir la couleur et la quantité choisies à leurs valeurs respectives
-    let color = selectColor.value;
-    let quantity = selectQuantity.value;
+    let color = colorValue();
+    let quantity = quantityValue();
 
     // Créer un objet du tableau pour le panier
     let cart = [{
@@ -86,6 +86,10 @@ button.addEventListener("click", (event) => {
         alert('Veuillez indiquer un nombre d\'articles')
     } else if (quantity > 100) {
         alert('Veuillez indiquer un nombre d\'articles inférieur à 100')
+    } else if (quantity == 1) {
+        alert('Votre produit a bien été ajouté au panier! ')
+    } else {
+        alert('Vos produits ont bien été ajouté au panier !')
     }
 
     // Convertir les clés et valeurs de l'objet en string (car localStorage ne peut pas storer d'objet, renvoie : "[object Object]") 
