@@ -98,29 +98,28 @@ button.addEventListener("click", (event) => {
 
 // Créer une variable pour récupérer l'objet panier (parse the string) 
 let basket = window.localStorage.getItem("panier");
-console.log(JSON.parse(basket))
 
 // Si le panier n'existe pas encore, on crée le tableau de l'objet product
 if (!basket || basket.length === 0) {
     window.localStorage.setItem("panier", JSON.stringify([product]));
 } else {
-    // Verifier si le produit existe dans le panier
+    // Verifier si le produit existe en parcourant le panier avec la boucle
     let productFound = false;
     for (let i = 0; i < basket.length; i++) {
         const cartProduct = basket[i];
-        if (productFound = true) {
-            let productFound = cartProduct;
-            // le produit est trouvé si l'id et la couleur sont les mêmes
-            productFound = (id === basket[i].id && color === basket[i].color);
-        } 
-        // si le produit est trouvé, on ajoute la nouvelle quantité sélectionnée à l'existante
-        if (productFound) {
-            product.quantity += productFound.quantity;
-        } else {
-            // Sinon on ajoute le produit sélectionné au tableau du panier
-            window.localStorage.setItem("panier", JSON.stringify([cartProduct]));
-        }
-
-    }}});
+    } 
+    // si le produit est trouvé, on ajoute la nouvelle quantité sélectionnée à l'existante
+    if (id === basket[i].id && color === basket[i].color) {
+        let productFound = cartProduct;
+        productFound = true;
+    }
+    if (productFound) {
+        product.quantity += productFound.quantity;
+    } else {
+        // Sinon on ajoute le produit sélectionné au tableau du panier
+        window.localStorage.setItem("panier", JSON.stringify([cartProduct]));
+    }
+}
+});
 
  
