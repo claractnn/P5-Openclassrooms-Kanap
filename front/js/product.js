@@ -118,8 +118,7 @@ if (!basket || basket.length === 0) {
             product.quantity += productFound.quantity;
         } else {
             // Sinon on ajoute le produit sélectionné au tableau du panier
-            window.localStorage.setItem("panier", JSON.stringify(product));
-            console.log(product);
+            window.localStorage.setItem("panier", JSON.stringify([cartProduct]));
         }
 
     }}});
