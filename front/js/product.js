@@ -83,116 +83,43 @@ button.addEventListener("click", (event) => {
         alert('Votre produit a bien été ajouté au panier! ')
     } else if (quantity > 1) {
         alert('Vos produits ont bien été ajouté au panier !')
-    } // Rediriger vers la page panier
+    }
 
-    // Créer un objet du tableau pour le panier
-    const cart = [{
+    // Créer un objet pour le panier
+    const product = {
         id: id,
         color: color,
         quantity: Number(quantity)
-    }];
-
-    // Convertir les clés et valeurs de l'objet en string (car localStorage ne peut pas storer d'objet, renvoie : "[object Object]") 
-    window.localStorage.setItem("panier", JSON.stringify(cart));
-
-    // Créer une variable pour récupérer l'objet panier (parse the string) 
-    let getCart = window.localStorage.getItem("panier");
-    console.log(JSON.parse(getCart));
-
-
-    // Créer une fonction qui ajoute un nouvel élément dans le panier si celui est vide
-    function addToCart(id, color, quantity) {
-        if (quantity < 0 || quantity == null && color == "" || color == null) {
-        return
-    } 
-}
-});
-
-
-
-/*
-    // Vérifier si le panier est vide si toutes les conditions sont remplies
-    let basket = getBasket(); 
-    if (cart.lenght == 0) {
-        // Créer une fonction qui récupère les éléments du panier 
-        function getBasket() {
-            // Créer une variable qui définie la récupération des éléments du panier
-            let productInLocalStorage = localStorage.getItem("panier")
-            if (productInLocalStorage == null) {
-                return []
-            } else {
-                // Sinon, retourner le contenu du localStorage
-                JSON.parse(productInLocalStorage)
-            }
-        }
     };
-        // Créer une fonction pour ajouter les éléments du produit choisis dans le panier
-        function addBasket(cart) {
-            let productInLocalStorage = getBasket();
+
+
+// Convertir les clés et valeurs de l'objet en string (car localStorage ne peut pas storer d'objet, renvoie : "[object Object]") 
+// window.localStorage.setItem("panier", JSON.stringify(product));
+
+// Créer une variable pour récupérer l'objet panier (parse the string) 
+let basket = window.localStorage.getItem("panier");
+console.log(JSON.parse(basket));
+
+// Si le panier n'existe pas encore, on crée le tableau de l'objet product
+if (!basket || basket.length === 0) {
+    window.localStorage.setItem("panier", JSON.stringify([product]));
+} else {
+    // Verifier si le produit existe dans le panier
+    let productFound = false;
+    for (let i = 0; i < basket.length; i++) {
+        const cartProduct = basket[i];
+        if (productFound = true) {
+            let productFound = cartProduct;
+            // si le produit est trouvé,
+            productFound = (id === basket[i].id && color === basket[i].color);
+        } 
+        if (productFound) {
+            product.quantity += productFound.quantity;
+        } else {
+            window.localStorage.setItem("panier", JSON.stringify(cartProduct))
+            console.log(cartProduct)
         }
-    
 
-    if (basket == null || basket.lenght == 0) {
-        // Si le panier n'existe pas, le créer en objet dans un tableau 
-        cart = [{
-        id: id,
-        color: color,
-        quantity: Number(quantity),
-        //price: Number(priceElement.textContent)
-        }];
+    }}});
 
-        // Créer une fonction d'ajout au panier 
-        function addBasket(cart) {
-        // Récupérer les éléments du produit choisi par l'utilisateur
-        let productInLocalStorage = getBasket();
-        };
-
-        // Créer un message d'alerte pour confirmer l'ajout du produit au panier
-        let addBasketConfirm = () => {
-            alert('Le produit a bien été ajouté au panier')
-        addBasketConfirm(cart)   // ???? PLACEMENT AVANT OU APRÈS L'ACCOLADE ????
-        }
-    } else {
-        // Vérifier si 2 produits sont similaires 
-        const found = false;
-
-            
-        
-    }
-
-    
-
-
-// Créer un message pour confirmer que le produit a bien été ajouté au panier
-/*
-// else {
-    addProductConfirm(productDetails)
-}
-
-}
-*/
-
-/* Créer une fonction pour l'ajout du/des produit(s) sélectionné(s) par l'utilisateur dans le panier
-function addToCart(productDetails) {}  */
-// Redirection sur une url relative cart.html une fois qu'on a ajouté au panier ?
-//window.location.href = "cart.html"
-
-/*
-// Créer une fonction pour enregistrer le panier
-function saveBasket(productInLocalStorage) {
-    localStorage.setItem("panier", JSON.stringify(productInLocalStorage))
-}
-
-// Créer une fonction de récupération du panier
-function getBasket() {
-    // Récupérer les informations du panier existant (choisies par l'utilisateur)
-    let productInLocalStorage = localStorage.getItem("panier");
-    if (productInLocalStorage == null) {
-        // Retourner un tableau vide si le panier est vide
-        return [];
-    } else {
-        // Sinon retourner le contenu du localStorage
-        return JSON.parse(productInLocalStorage)
-    }
-}
-*/
+ 
