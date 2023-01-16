@@ -110,14 +110,16 @@ if (!basket || basket.length === 0) {
         const cartProduct = basket[i];
         if (productFound = true) {
             let productFound = cartProduct;
-            // si le produit est trouvé,
+            // le produit est trouvé si l'id et la couleur sont les mêmes
             productFound = (id === basket[i].id && color === basket[i].color);
         } 
+        // si le produit est trouvé, on ajoute la nouvelle quantité sélectionnée à l'existante
         if (productFound) {
             product.quantity += productFound.quantity;
         } else {
-            window.localStorage.setItem("panier", JSON.stringify(cartProduct))
-            console.log(cartProduct)
+            // Sinon on ajoute le produit sélectionné au tableau du panier
+            window.localStorage.setItem("panier", JSON.stringify(product));
+            console.log(product);
         }
 
     }}});
