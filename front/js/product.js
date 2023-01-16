@@ -98,7 +98,7 @@ button.addEventListener("click", (event) => {
 
 // Créer une variable pour récupérer l'objet panier (parse the string) 
 let basket = window.localStorage.getItem("panier");
-console.log(JSON.parse(basket));
+console.log(JSON.parse(basket))
 
 // Si le panier n'existe pas encore, on crée le tableau de l'objet product
 if (!basket || basket.length === 0) {
