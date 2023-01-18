@@ -90,31 +90,39 @@ button.addEventListener("click", (event) => {
         color: color,
         quantity: Number(quantity)
     };
-// Convertir les clés et valeurs de l'objet en string (car localStorage ne peut pas storer d'objet, renvoie : "[object Object]") 
-// window.localStorage.setItem("panier", JSON.stringify(product));
+    // Créer une variable pour récupérer l'objet panier (parse the string) 
+    let basket = JSON.parse(window.localStorage.getItem("panier"));
 
-// Créer une variable pour récupérer l'objet panier (parse the string) 
-let basket = JSON.parse(window.localStorage.getItem("panier"));
-// Si le panier n'existe pas encore, on crée le tableau de l'objet product
-if (!basket || basket.length === 0) {
-    window.localStorage.setItem("panier", JSON.stringify([product]));
-} else {
-    // Verifier si le produit existe en parcourant le panier avec la boucle
-    let productFound = false;
-    for (let i = 0; i < basket.length; i++) {
-        let cartProduct = basket;
-        console.log(cartProduct)
-        // cartProduct = basket[i];
-    } 
-    // si le produit est trouvé, on ajoute la nouvelle quantité sélectionnée à l'existante
-    if (id === cartProduct[i].id && color === cartProduct[i].color) {
-        productFound = true;
-        product.quantity += productFound.quantity;
+    // Si le panier n'existe pas encore, on crée le tableau de l'objet product
+    if (!basket || basket.length === 0) {
+        window.localStorage.setItem("panier", JSON.stringify([product]));
     } else {
-        // Sinon on ajoute le produit sélectionné au tableau du panier
-        window.localStorage.setItem("panier", JSON.stringify(cartProduct));
-    }
-}
+            for (let i = 0; i < basket.length; i++) {
+                const productFound = basket[0];
+                console.log(basket[0])
+            }
+            if(product.id == basket[0].id && product.color == basket[0].color) {
+                productFound = true
+                productFound.quantity += product.quantity;
+            } else {
+                basket.push(product);
+            }
+            window.localStorage.setItem("panier", JSON.stringify(basket));
+        }
+        /*
+        else {
+        // Verifier si le produit existe en parcourant le panier avec la boucle
+        const basketFiltered = basket.filter(p => p.id === product.id && p.color === product.color);
+        const productFound = basketFiltered[0];
+        if (productFound) {
+            // si le produit est trouvé, on ajoute la nouvelle quantité sélectionnée à l'existante
+            productFound.quantity += product.quantity;
+        } else {
+            // Sinon on ajoute le produit sélectionné au tableau du panier
+            basket.push(product);
+        }
+        window.localStorage.setItem("panier", JSON.stringify(basket));
+    }*/
 });
 
- 
+   
