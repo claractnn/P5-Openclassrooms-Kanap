@@ -56,6 +56,10 @@ function quantityValue() {
     return quantity.value;
 }
 
+function goToCart() {
+    window.location.href='cart.html';
+}
+
 /* // Définir les éléments d'un produit sélectionné par l'utilisateur
 let selectColor = document.getElementById("colors");
 let selectQuantity = document.getElementById('quantity');
@@ -80,9 +84,13 @@ button.addEventListener("click", (event) => {
     } else if (quantity > 100) {
         alert('Veuillez indiquer un nombre d\'articles inférieur à 100')
     } else if (quantity == 1) {
-        alert('Votre produit a bien été ajouté au panier! ')
+        alert('Votre produit a bien été ajouté au panier !')
+        goToCart();
+        //document.location.href('cart.html')
     } else if (quantity > 1) {
-        alert('Vos produits ont bien été ajouté au panier !')
+        alert('Vos produits ont bien été ajoutés au panier !')
+        goToCart();
+        //document.location.href('cart.html')
     }
     // Créer un objet pour le panier
     const product = {
@@ -97,20 +105,6 @@ button.addEventListener("click", (event) => {
     if (!basket || basket.length === 0) {
         window.localStorage.setItem("panier", JSON.stringify([product]));
     } else {
-            for (let i = 0; i < basket.length; i++) {
-                const productFound = basket[0];
-                console.log(basket[0])
-            }
-            if(product.id == basket[0].id && product.color == basket[0].color) {
-                productFound = true
-                productFound.quantity += product.quantity;
-            } else {
-                basket.push(product);
-            }
-            window.localStorage.setItem("panier", JSON.stringify(basket));
-        }
-        /*
-        else {
         // Verifier si le produit existe en parcourant le panier avec la boucle
         const basketFiltered = basket.filter(p => p.id === product.id && p.color === product.color);
         const productFound = basketFiltered[0];
@@ -122,7 +116,22 @@ button.addEventListener("click", (event) => {
             basket.push(product);
         }
         window.localStorage.setItem("panier", JSON.stringify(basket));
-    }*/
+    } 
+    
+    /* else {
+            for (let i = 0; i < basket.length; i++) {
+                const productFound = basket[0];
+                console.log(basket[0])
+            }
+            if(product.id == basket[0].id && product.color == basket[0].color) {
+                productFound = true
+                productFound.quantity += product.quantity;
+            } else {
+                basket.push(product);
+            }
+            window.localStorage.setItem("panier", JSON.stringify(basket));
+        } */
+
 });
 
    
