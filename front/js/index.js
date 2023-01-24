@@ -27,27 +27,3 @@ function displayProducts(data) {
           document.getElementById('items').innerHTML += productCard;
     }
 };
-
-
-/* CRÉATION OBJET ?
-const productItem = {
-    productLink: "test",
-    productImg
-};
-console.log(productItem);
-*/
-
-// Afficher tous les produits dans la page d'accueil
-
-
-/* APPELER CHAQUE PRODUIT ?
-
-const articles = document.getElementsByTagName('article');
-    console.log(articles)
-
-const article1 = document.getElementsByName("productName");
-    console.log(article1) 
-
-const productItems = document.getElementById('items');
-    console.log(productItems) 
-*/

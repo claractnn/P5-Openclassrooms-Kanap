@@ -56,6 +56,7 @@ function quantityValue() {
     return quantity.value;
 }
 
+// Créer une fonction de redirection à la page panier après avoir choisi un ou plusieurs produit(s)
 function goToCart() {
     window.location.href='cart.html';
 }
