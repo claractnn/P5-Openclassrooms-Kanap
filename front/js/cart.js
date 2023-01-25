@@ -11,13 +11,16 @@ if (!basketList || basketList.length == 0) {
     cartSection.appendChild(displayErrorMessage.body.firstChild);
     // Sinon, afficher le panier avec la fonction 
 } else {
-    displaybasketList(basketList);
+    displayBasketList(basketList);
 }
 
 // AFFICHER LE PANIER SUR LA PAGE PANIER
 
 // Créer une fonction async pour afficher correctement chaque élément du panier
-async function displaybasketList() {
+async function displayBasketList() {
+    // Initialiser la quantité totale et le prix total
+    let totalQuantity = 0;
+    let totalPrice = 0;
     for (let i = 0; i < basketList.length; i++) {
         let id = basketList[i].id;
         let color = basketList[i].color;
@@ -51,14 +54,18 @@ async function displaybasketList() {
              </article>`;
             document.getElementById('cart__items').innerHTML += productDetails;
             // Afficher correctement la quantité et le prix totaux
-            // Initialiser la quantité totale et le prix total
-            let totalQuantity = 0;
-            let totalPrice = 0;
             
+            // Afficher la quantité totale
+            totalQuantity += parseInt(basketList[i].quantity);
+            document.getElementById('totalQuantity').innerHTML = totalQuantity;
+
+            // Afficher le prix total
+            totalPrice += data.price * basketList[i].quantity;
+            document.getElementById('totalPrice').innerHTML = totalPrice;
+
         }
         
     // MODIFIER LA QUANTITÉ DU PRODUIT DIRECTEMENT SUR LA PAGE PANIER
-
         // Créer un événement de type change
 
         
@@ -66,5 +73,4 @@ async function displaybasketList() {
     
 }
 
-// Vérifier si les éléments sont présents dans le tableau panier
 
