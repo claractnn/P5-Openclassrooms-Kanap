@@ -6,6 +6,7 @@ console.table(basketList)
 // Si le panier est vide, afficher un message d'erreur
 if (!basketList || basketList.length == 0) {
     const parser = new DOMParser();
+    let cartSection = document.getElementById('cart__items');
     let errorMessage = `<article class="cart__item"><p>Votre panier est vide !</p></article>`
     const displayErrorMessage = parser.parseFromString(errorMessage, "text/html");
     cartSection.appendChild(displayErrorMessage.body.firstChild);
@@ -14,8 +15,7 @@ if (!basketList || basketList.length == 0) {
     displayBasketList(basketList);
 }
 
-// AFFICHER LE PANIER SUR LA PAGE PANIER
-
+// AFFICHER TOUS LES ÉLÉMENTS DÉTAILLÉS SUR LA PAGE PANIER
 // Créer une fonction async pour afficher correctement chaque élément du panier
 async function displayBasketList() {
     // Initialiser la quantité totale et le prix total
@@ -25,7 +25,6 @@ async function displayBasketList() {
         let id = basketList[i].id;
         let color = basketList[i].color;
         let quantity = basketList[i].quantity;
-        let cartSection = document.getElementById('cart__items');
         const apiProductUrl = 'http://localhost:3000/api/products/' + id;
         const response = await fetch(apiProductUrl);
         if (response.ok) {
@@ -62,15 +61,14 @@ async function displayBasketList() {
             // Afficher le prix total
             totalPrice += data.price * basketList[i].quantity;
             document.getElementById('totalPrice').innerHTML = totalPrice;
-
         }
-        
-    // MODIFIER LA QUANTITÉ DU PRODUIT DIRECTEMENT SUR LA PAGE PANIER
-        // Créer un événement de type change
+    };
+}
+
+// MODIFIER LA QUANTITÉ DU PRODUIT DIRECTEMENT SUR LA PAGE PANIER
+// Créer un événement de type change
 
         
-    };
-    
-}
+
 
 
