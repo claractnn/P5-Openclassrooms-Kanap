@@ -10,6 +10,8 @@ if (!basketList || basketList.length == 0) {
     let errorMessage = `<article class="cart__item"><p>Votre panier est vide !</p></article>`
     const displayErrorMessage = parser.parseFromString(errorMessage, "text/html");
     cartSection.appendChild(displayErrorMessage.body.firstChild);
+    document.getElementById('totalQuantity').innerHTML = `0`;
+    document.getElementById('totalPrice').innerHTML = `0`;
     // Sinon, afficher le panier avec la fonction 
 } else {
     displayBasketList(basketList);
@@ -18,7 +20,7 @@ if (!basketList || basketList.length == 0) {
 // AFFICHER TOUS LES ÉLÉMENTS DÉTAILLÉS SUR LA PAGE PANIER
 // Créer une fonction async pour afficher correctement chaque élément du panier
 async function displayBasketList() {
-    // Initialiser la quantité totale et le prix total
+    // Initialiser la quantité totale et le prix total en tant que nombre
     let totalQuantity = 0;
     let totalPrice = 0;
     for (let i = 0; i < basketList.length; i++) {
@@ -67,8 +69,6 @@ async function displayBasketList() {
 
 // MODIFIER LA QUANTITÉ DU PRODUIT DIRECTEMENT SUR LA PAGE PANIER
 // Créer un événement de type change
+// Récupérer les modifications de la quantité et les enregistrer dans le local storage
 
-        
-
-
-
+//let 
