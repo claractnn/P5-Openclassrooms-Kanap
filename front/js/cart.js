@@ -95,4 +95,3 @@ function changeQuantity() {
     }
     
 };
-            //let oldQuantity = basketList[i].quantity;
