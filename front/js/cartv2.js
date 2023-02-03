@@ -2,7 +2,7 @@
 // AFFICHER LA PAGE PANIER 
 
 function getBasket() {
-    let basket = localStorage.getItem("panier");
+    let basket = window.localStorage.getItem("panier");
     if (!basket || basket == []) {
         document.querySelector('h1').textContent = "Votre panier est vide";
         return [];
@@ -53,26 +53,26 @@ function params() {
 async function displayItem(item) {
     await fetch(`http://localhost:3000/api/products/${item.id}`) 
         .then(res => res.json())
-        .then(data => displayBasketDetails(data))
-        .catch(() => document.querySelector('h1').innerHTML = 'Le serveur est momentanément indispoinble');
+        .then(product => displayBasketDetails(product, item))
+        .catch(() => document.querySelector('h1').textContent = 'Le serveur est momentanément indispoinble');
     };
 
-function displayBasketDetails(data) {
-    document.getElementById('cart__items').textContent += 
-    `<article class="cart__item" data-id="${data.id}" data-color="${data.color}">
+function displayBasketDetails(prod, itm) {
+    document.getElementById('cart__items').innerHTML += 
+    `<article class="cart__item" data-id="${prod.id}" data-color="${itm.color}">
     <div class="cart__item__img">
-        <img src="${data.imageUrl}" alt="${data.altTxt}">
+        <img src="${imageUrl}" alt="${altTxt}">
     </div>
     <div class="cart__item__content">
         <div class="cart__item__content__description">
-            <h2>${data.name}</h2>
-            <p>${data.color}</p>
-            <p>${data.price} €</p>
+            <h2>${prod.name}</h2>
+            <p>${color}</p>
+            <p>${price} €</p>
         </div>
         <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
                 <p>Qté : </p>
-                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${data.quantity}">
+                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${quantity}">
             </div>
             <div class="cart__item__content__settings__delete">
                 <p class="deleteItem">Supprimer</p>
