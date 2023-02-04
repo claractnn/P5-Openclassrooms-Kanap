@@ -1,5 +1,7 @@
-// RÉCUPÉRER LES DONNÉES DU LOCALSTORAGE
 // AFFICHER LA PAGE PANIER 
+displayBasket();
+
+// RÉCUPÉRER LES DONNÉES DU LOCALSTORAGE
 
 function getBasket() {
     let basket = window.localStorage.getItem("panier");
@@ -7,7 +9,7 @@ function getBasket() {
         document.querySelector('h1').textContent = "Votre panier est vide";
         return [];
     } else {
-        return JSON.parse(basket)
+        return JSON.parse(basket);
     }
 };
 
@@ -29,8 +31,9 @@ function saveBasket() {
     window.localStorage.setItem("panier", JSON.stringify(basket));
 };
 
-async function displayBasket() {
-    await displayBasketList();
+function displayBasket() {
+    // getBasket();
+    displayBasketList();
     itemToDelete();
     changeQuantity();
     totalQuantity();
@@ -38,36 +41,51 @@ async function displayBasket() {
 };
 
 // Afficher les produits 
-async function displayBasketList() {
+function displayBasketList() {
     let basket = getBasket();
-    for(let kanap of basket) {
-        await displayItem(kanap);
+    for(let items of basket) {
+        displayItem(items);
     };
 };
 
-function params() {
+/*function params() {
+    let params = (new URL(document.location)).searchParams;
+};*/
+
+function displayItem() {
     let params = (new URL(document.location)).searchParams;
     const id = params.get('id');
-};
-
-async function displayItem(item) {
-    await fetch(`http://localhost:3000/api/products/${item.id}`) 
+    const apiUrl = 'http://localhost:3000/api/products/' + id;
+    fetch(apiUrl) 
         .then(res => res.json())
-        .then(product => displayBasketDetails(product, item))
-        .catch(() => document.querySelector('h1').textContent = 'Le serveur est momentanément indispoinble');
+        .then(data => displayBasketDetails(data))
+        .catch(() => document.querySelector('h1').textContent = 'Le serveur est momentanément indisponible');
     };
 
-function displayBasketDetails(prod, itm) {
+   /*function displayItem() {
+    let params = (new URL(document.location)).searchParams;
+    const id = params.get('id');
+    const apiUrl = 'http://localhost:3000/api/products/' + id;
+    fetch(apiUrl) 
+        .then((res) => res.json())
+        if (res.ok) {
+        displayBasketDetails(data)
+        } else {
+        document.querySelector('h1').textContent = 'Le serveur est momentanément indisponible';
+        }
+    };*/    
+
+function displayBasketDetails(data) {
     document.getElementById('cart__items').innerHTML += 
-    `<article class="cart__item" data-id="${prod.id}" data-color="${itm.color}">
+    `<article class="cart__item" data-id="${id}" data-color="${color}">
     <div class="cart__item__img">
-        <img src="${imageUrl}" alt="${altTxt}">
+        <img src="${data.imageUrl}" alt="${data.altTxt}">
     </div>
     <div class="cart__item__content">
         <div class="cart__item__content__description">
-            <h2>${prod.name}</h2>
+            <h2>${data.name}</h2>
             <p>${color}</p>
-            <p>${price} €</p>
+            <p>${data.price} €</p>
         </div>
         <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
@@ -86,7 +104,7 @@ function displayBasketDetails(prod, itm) {
 
 // SUPPRIMER UN PRODUIT
 function itemToDelete() {
-    let allErase = document.getElementById('cart__tem');
+    let allErase = document.querySelectorAll('cart__tem');
     for(erase of allErase) {
         erase.addEventListener('click', () => removeItem(erase));
     };
@@ -143,7 +161,7 @@ function totalQuantity() {
 function totalPrice() {
     let totalPrice = 0;
     let cartItem = document.querySelectorAll('cart__item');
-    cartItem.fortEach(addPriceToTotal);
+    cartItem.forEach(addPriceToTotal);
         function addPriceToTotal() {
             let quantity = cartItem.querySelector('itemQuantity').value;
             let price = cartItem.querySelector('totalPrice').textContent;
