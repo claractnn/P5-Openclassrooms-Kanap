@@ -22,17 +22,16 @@ if (!basket || basket.length == 0) {
     let errorMessage = `<article class="cart__item"><p>Votre panier est vide !</p></article>`
     const displayErrorMessage = parser.parseFromString(errorMessage, "text/html");
     cartSection.appendChild(displayErrorMessage.body.firstChild);
-    
     // Sinon, afficher le panier avec la fonction 
 } else {
-    displaybasket(basket);
+    displayBasket(basket);
 };
 
 
 
 // AFFICHER TOUS LES ÉLÉMENTS DÉTAILLÉS SUR LA PAGE PANIER
 // Créer une fonction async pour afficher correctement chaque élément du panier
-async function displaybasket() {
+async function displayBasket() {
     // Initialiser la quantité totale et le prix total en tant que nombre
     //let totalQuantity = 0;
     //let totalPrice = 0;
@@ -87,8 +86,8 @@ async function displaybasket() {
     // document.getElementById('totalPrice').innerHTML = totalPrice;
     itemToDelete();
     changeQuantity();
-    totalQuantity();
-    //totalPrice();
+    // window.location.reload();
+
 };
 
 // DYNAMISER LA PAGE (MODIFICATION QUANTITÉ ET SUPPRESSION ARTICLE)
@@ -105,7 +104,6 @@ function removeItem(deleteDom) {
     let itemSelect = deleteDom.closest('.cart__item');
     itemSelect.remove();
     deleteItemFromBasket(itemSelect);
-    console.log('effacé !')
 };
 
 // Créer une fonction pour supprimer l'élément du localstorage
@@ -125,8 +123,8 @@ function changeQuantity() {
     for (let qty of allQty) {
         qty.addEventListener('change', () => changeQuantityToCart(qty));
     }
-    //totalQuantity();
-    //totalPrice();
+    totalQuantity();
+    totalPrice();
 };
 
 function changeQuantityToCart(qty) {
@@ -139,7 +137,6 @@ function changeQuantityToCart(qty) {
     if (itemFound.quantity > 100 || itemFound.quantity < 1) {
         alert('Veuillez indiquer une quantité entre 1 et 100')
     } else {
-        // reload();
          // Sauvegarder le panier
         window.localStorage.setItem('panier', JSON.stringify(basket));
         document.getElementById('totalQuantity').textContent = itemFound.quantity;
@@ -157,16 +154,21 @@ function totalQuantity() {
 };
 
 function totalPrice() {
-    let totalPrice = 0;
-    let carItems = document.querySelector('.cart__item');
-    carItems.forEach(addPrice);
+    let itemQuantity = document.querySelectorAll('.itemQuantity');
+    let cartItems = document.querySelectorAll('.cart__item__content__description');
+    let itemPrice = 0;
+    for(let i = 0; i < cartItems.length; i++) {
+        itemPrice += parseInt(cartItems[i].lastElementChild.textContent) * itemQuantity[i].value;
+    }
+    document.getElementById('totalPrice').textContent = itemPrice;
+};
+   /* cartItems.forEach(addPrice());
     function addPrice(cartItem) {
         let quantity = cartItem.querySelector('.itemQuantity').value;
         let price = cartItem.querySelector('h2 + p + p > span').textContent;
         totalPrice += quantity * price;
     };
-    document.getElementById('totalPrice').textContent = totalPrice;
-};
+};*/
 
 /*function totalPrice() {
     let totalPrice = 0;
