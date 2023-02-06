@@ -1,4 +1,5 @@
 // AFFICHER LA PAGE PANIER 
+getBasket();
 displayBasket();
 
 // RÉCUPÉRER LES DONNÉES DU LOCALSTORAGE
@@ -7,6 +8,8 @@ function getBasket() {
     let basket = window.localStorage.getItem("panier");
     if (!basket || basket == []) {
         document.querySelector('h1').textContent = "Votre panier est vide";
+        document.getElementById('totalQuantity').innerHTML = `0`;
+        document.getElementById('totalPrice').innerHTML = `0`;
         return [];
     } else {
         return JSON.parse(basket);
@@ -22,8 +25,7 @@ function getBasket() {
         let errorMessage = `<article class="cart__item"><p>Votre panier est vide !</p></article>`
         const displayErrorMessage = parser.parseFromString(errorMessage, "text/html");
         cartSection.appendChild(displayErrorMessage.body.firstChild);
-        document.getElementById('totalQuantity').innerHTML = `0`;
-        document.getElementById('totalPrice').innerHTML = `0`;
+        
     }
 };*/
 
@@ -32,7 +34,6 @@ function saveBasket() {
 };
 
 function displayBasket() {
-    // getBasket();
     displayBasketList();
     itemToDelete();
     changeQuantity();
@@ -43,24 +44,21 @@ function displayBasket() {
 // Afficher les produits 
 function displayBasketList() {
     let basket = getBasket();
-    for(let items of basket) {
-        displayItem(items);
-    };
-};
+        let params = (new URL(document.location)).searchParams;
+        const id = params.get('id');
+        // const apiUrl = 'http://localhost:3000/api/products/' + id;
+        fetch('http://localhost:3000/api/products/' + id) 
+            .then(res => res.json())
+            .then((data) => {
+                displayBasketDetails(data)
+            })
+            .catch(() => document.querySelector('h1').textContent = 'Le serveur est momentanément indisponible');    
+        };
 
-/*function params() {
-    let params = (new URL(document.location)).searchParams;
-};*/
 
-function displayItem() {
-    let params = (new URL(document.location)).searchParams;
-    const id = params.get('id');
-    const apiUrl = 'http://localhost:3000/api/products/' + id;
-    fetch(apiUrl) 
-        .then(res => res.json())
-        .then(data => displayBasketDetails(data))
-        .catch(() => document.querySelector('h1').textContent = 'Le serveur est momentanément indisponible');
-    };
+//function displayItem() {
+    
+//};
 
    /*function displayItem() {
     let params = (new URL(document.location)).searchParams;
@@ -131,7 +129,7 @@ function changeQuantity() {
     for(qty of allQuantity) {
         qty.addEventListener('change', () => changeQuantityToBasket(qty));
     }
-}
+};
 
 function changeQuantityToBasket(qty) {
     let cartItem = qty.closest('.cart__item');
@@ -144,8 +142,6 @@ function changeQuantityToBasket(qty) {
         } else {
             saveBasket();
         }
-    totalQuantity();
-    totalPrice();
 };
 
 function totalQuantity() {
@@ -160,12 +156,13 @@ function totalQuantity() {
 
 function totalPrice() {
     let totalPrice = 0;
-    let cartItem = document.querySelectorAll('cart__item');
-    cartItem.forEach(addPriceToTotal);
-        function addPriceToTotal() {
-            let quantity = cartItem.querySelector('itemQuantity').value;
-            let price = cartItem.querySelector('totalPrice').textContent;
-            totalPrice += price * quantity;
-        }
-        document.getElementById('totalPrice').textContent = totalPrice;
+    let carItems = document.querySelector('.cart__item');
+    // Définir que carItems est un array ?
+    carItems.forEach(addPrice);
+    function addPrice(cartItem) {
+        let quantity = cartItem.querySelector('.itemQuantity').value;
+        let price = cartItem.querySelector('h2 + p + p > span').textContent;
+        totalPrice += quantity * price;
+    };
+    document.getElementById('totalPrice').textContent = totalPrice;
 };

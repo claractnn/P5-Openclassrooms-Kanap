@@ -1,37 +1,49 @@
 // Récupérer les données à partir du local storage -- fonction pour récupérer les données du panier
-let basketList = JSON.parse(window.localStorage.getItem("panier"));
-console.table(basketList)
+// let basket = JSON.parse(window.localStorage.getItem("panier"));
+// console.table(basket)
+function getBasket() {
+    let basket = window.localStorage.getItem("panier");
+    if (!basket || basket == []) {
+        document.querySelector('h1').textContent = "Votre panier est vide";
+        document.getElementById('totalQuantity').innerHTML = `0`;
+        document.getElementById('totalPrice').innerHTML = `0`;
+        return [];
+    } else {
+        return JSON.parse(basket);
+    }
+};
+let basket = getBasket();
 
 // Si le panier est vide, afficher un message d'erreur
-if (!basketList || basketList.length == 0) {
+if (!basket || basket.length == 0) {
+    getBasket();
     const parser = new DOMParser();
     let cartSection = document.getElementById('cart__items');
     let errorMessage = `<article class="cart__item"><p>Votre panier est vide !</p></article>`
     const displayErrorMessage = parser.parseFromString(errorMessage, "text/html");
     cartSection.appendChild(displayErrorMessage.body.firstChild);
-    document.getElementById('totalQuantity').innerHTML = `0`;
-    document.getElementById('totalPrice').innerHTML = `0`;
+    
     // Sinon, afficher le panier avec la fonction 
 } else {
-    displayBasketList(basketList);
+    displaybasket(basket);
 };
 
 
 
 // AFFICHER TOUS LES ÉLÉMENTS DÉTAILLÉS SUR LA PAGE PANIER
 // Créer une fonction async pour afficher correctement chaque élément du panier
-async function displayBasketList() {
+async function displaybasket() {
     // Initialiser la quantité totale et le prix total en tant que nombre
-    let totalQuantity = 0;
-    let totalPrice = 0;
+    //let totalQuantity = 0;
+    //let totalPrice = 0;
     // Initialiser la section de la carte avec un contenu vide
     let cartItems = '';
     // Parcourir le tableau du panier
-    for (let i = 0; i < basketList.length; i++) {
+    for (let i = 0; i < basket.length; i++) {
         // Déclarer les variables des détails du produit 
-        let id = basketList[i].id;
-        let color = basketList[i].color;
-        let quantity = basketList[i].quantity;
+        let id = basket[i].id;
+        let color = basket[i].color;
+        let quantity = basket[i].quantity;
         const apiProductUrl = 'http://localhost:3000/api/products/' + id;
         // Requêter l'url du produit 
         const response = await fetch(apiProductUrl);
@@ -63,19 +75,20 @@ async function displayBasketList() {
             //Ajouter les détails du produit dans la section de la cart (cart__item)
             cartItems += productDetails;
             // Ajouter la quantité choisie
-            totalQuantity += parseInt(basketList[i].quantity);
+            //totalQuantity += parseInt(basket[i].quantity);
             // Ajouter le prix et le multiplier par la quantité 
-            totalPrice += data.price * basketList[i].quantity;
+            //totalPrice += data.price * basket[i].quantity;
         }
     }
     // Afficher les détails du produit 
     document.getElementById('cart__items').innerHTML = cartItems;
     // Afficher la quantité et le prix totaux
-    document.getElementById('totalQuantity').innerHTML = totalQuantity;
-    document.getElementById('totalPrice').innerHTML = totalPrice;
-
+    // document.getElementById('totalQuantity').innerHTML = totalQuantity;
+    // document.getElementById('totalPrice').innerHTML = totalPrice;
     itemToDelete();
     changeQuantity();
+    totalQuantity();
+    //totalPrice();
 };
 
 // DYNAMISER LA PAGE (MODIFICATION QUANTITÉ ET SUPPRESSION ARTICLE)
@@ -97,10 +110,10 @@ function removeItem(deleteDom) {
 
 // Créer une fonction pour supprimer l'élément du localstorage
 function deleteItemFromBasket(deleteItem) {
-    let basketList = JSON.parse(window.localStorage.getItem("panier"));
-    basketList = basketList.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
+    let basket = JSON.parse(window.localStorage.getItem("panier"));
+    basket = basket.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
     // Sauvegarder le panier 
-    window.localStorage.setItem("panier", JSON.stringify(basketList))
+    window.localStorage.setItem("panier", JSON.stringify(basket))
 };
 
 
@@ -112,13 +125,15 @@ function changeQuantity() {
     for (let qty of allQty) {
         qty.addEventListener('change', () => changeQuantityToCart(qty));
     }
+    //totalQuantity();
+    //totalPrice();
 };
 
 function changeQuantityToCart(qty) {
     let cartItem = qty.closest('.cart__item');
     // Récupérer les données du localstorage
-    let basketList = JSON.parse(window.localStorage.getItem("panier"));
-    let itemFound = basketList.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
+    let basket = JSON.parse(window.localStorage.getItem("panier"));
+    let itemFound = basket.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
     //checkQuantityValue();
     itemFound.quantity = Number(qty.value);
     if (itemFound.quantity > 100 || itemFound.quantity < 1) {
@@ -126,31 +141,44 @@ function changeQuantityToCart(qty) {
     } else {
         // reload();
          // Sauvegarder le panier
-        window.localStorage.setItem('panier', JSON.stringify(basketList));
+        window.localStorage.setItem('panier', JSON.stringify(basket));
+        document.getElementById('totalQuantity').textContent = itemFound.quantity;
     }
-    totalQuantity();
-    totalPrice();
 };
 
 function totalQuantity() {  
-    let basketList = JSON.parse(window.localStorage.getItem("panier"));
+    let basket = getBasket();
     let totalQuantity = 0;
-    basketList.forEach(addQuantityToTotal);
-        function addQuantityToTotal(item) {   
-            totalQuantity += item.quantity;
-        };
+    basket.forEach(addQuantityToTotal);
+    function addQuantityToTotal(item) {   
+        totalQuantity += item.quantity;
+    };
     document.getElementById('totalQuantity').textContent = totalQuantity;
 };
 
 function totalPrice() {
     let totalPrice = 0;
-    let cartItem = document.querySelectorAll('.cart__item');
-    cartItem.forEach(addPriceToTotal);
-        function addPriceToTotal(cartItm) {
-            let quantity = cartItm.querySelector('.itemQuantity').value;
-            let price = (cartItm.querySelectorAll('.totalPrice'));
-            totalPrice += price * quantity;
-        }
+    let carItems = document.querySelector('.cart__item');
+    carItems.forEach(addPrice);
+    function addPrice(cartItem) {
+        let quantity = cartItem.querySelector('.itemQuantity').value;
+        let price = cartItem.querySelector('h2 + p + p > span').textContent;
+        totalPrice += quantity * price;
+    };
     document.getElementById('totalPrice').textContent = totalPrice;
+};
+
+/*function totalPrice() {
+    let totalPrice = 0;
+    let basket = getBasket();
+    // let cartItem = document.querySelector('.cart__item');
+    basket.forEach(addPriceToTotal);
+    function addPriceToTotal(cartItm) {
+        let totalQuantity = cartItm.querySelector('.itemQuantity').value;
+        let price = (cartItm.closest('.totalPrice')).textContent;
+        totalPrice += basket[i].price * totalQuantity;
+    }
+    document.getElementById('totalPrice').innerHTML = totalPrice;
     // reload();
 };
+*/
