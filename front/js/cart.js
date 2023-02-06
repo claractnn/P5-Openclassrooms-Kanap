@@ -112,6 +112,7 @@ function deleteItemFromBasket(deleteItem) {
     basket = basket.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
     // Sauvegarder le panier 
     window.localStorage.setItem("panier", JSON.stringify(basket))
+    window.location.reload();
 };
 
 
@@ -132,12 +133,12 @@ function changeQuantityToCart(qty) {
     // Récupérer les données du localstorage
     let basket = JSON.parse(window.localStorage.getItem("panier"));
     let itemFound = basket.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
-    //checkQuantityValue();
     itemFound.quantity = Number(qty.value);
     if (itemFound.quantity > 100 || itemFound.quantity < 1) {
         alert('Veuillez indiquer une quantité entre 1 et 100')
     } else {
-         // Sauvegarder le panier
+        // Sauvegarder le panier
+        window.location.reload();
         window.localStorage.setItem('panier', JSON.stringify(basket));
         document.getElementById('totalQuantity').textContent = itemFound.quantity;
     }
@@ -162,7 +163,10 @@ function totalPrice() {
     }
     document.getElementById('totalPrice').textContent = itemPrice;
 };
-   /* cartItems.forEach(addPrice());
+
+
+
+/* cartItems.forEach(addPrice());
     function addPrice(cartItem) {
         let quantity = cartItem.querySelector('.itemQuantity').value;
         let price = cartItem.querySelector('h2 + p + p > span').textContent;
