@@ -54,7 +54,7 @@ function displayBasketList() {
             })
             .catch(() => document.querySelector('h1').textContent = 'Le serveur est momentanément indisponible');    
         };
-
+// test à réaliser ?? ----- >  displayBasketList();
 
 //function displayItem() {
     
