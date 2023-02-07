@@ -1,12 +1,12 @@
 // FORMULAIRE
 // Déclarer les variables de chaque input du formulaire
-const form = document.querySelector('.cart__order__form');
+//const form = document.querySelector('.cart__order__form');
 const firstName = document.querySelector('#firstName');
 const lastName = document.querySelector('#lastName');
 const address = document.querySelector('#address');
 const city = document.querySelector('#city');
 const email = document.querySelector('#email');
-console.log(email.value)
+
 
 // Déclarer les variables pour les erreurs de chaque input du formulaire
 const firstNameError = firstName.nextElementSibling;
@@ -17,7 +17,7 @@ const emailError = email.nextElementSibling;
 
 // Créer les RegExp 
 const nameCityRegExp = new RegExp(/^[a-zA-ZÀ-ÿ]+(['-]?[a-zA-ZÀ-ÿ]+)$/);
-const addressRegExp = new RegExp(/^[0-9]{1,3}[a-zA-ZÀ-ÿ -,']+$/);
+const addressRegExp = new RegExp(/^[0-9]{1,3}[a-zA-ZÀ-ÿ \-,']+$/);
 const emailRegExp = new RegExp(/^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,10}$/);
 
 // Créer une fonction de contrôle du formulaire 
@@ -54,9 +54,10 @@ controlForm();
 
 //COMMANDE
 //Créer une variable de l'api "products/order"
-let apiUrlOrder = 'http://localhost:3000/products/order'
+let apiUrlOrder = 'http://localhost:3000/api/products/order'
 let submitBtn = document.getElementById('order');
-let basket = JSON.parse(localStorage.getItem("panier"));
+//let basket = JSON.parse(localStorage.getItem("panier"));
+
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -88,7 +89,8 @@ submitBtn.addEventListener('click', (e) => {
             method: "post",
             body: JSON.stringify(order),
             headers: {
-                "Content-Type": "applications/json",
+                "Content-Type": "application/json",
+                accept: "application/json"
             },
         };
         //Requêter l'API et la méthode POST
@@ -96,10 +98,10 @@ submitBtn.addEventListener('click', (e) => {
             .then((res) => res.json())
             .then((data) => {
                 localStorage.clear();
-                window.location.href = "confirmation.html?orderId" + data.orderId;
+                window.location.href = "confirmation.html?orderId=" + data.orderId;
             })
             .catch((error) => {
-                alert(error);
+                alert('Une erreur est survenue');
             });
     
     } else {
