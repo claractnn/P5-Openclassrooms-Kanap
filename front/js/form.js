@@ -52,8 +52,7 @@ function controlForm() {
 controlForm();
 
 //COMMANDE
-//Créer une variable de l'api "products/order"
-let apiUrlOrder = 'http://localhost:3000/api/products/order'
+
 let submitBtn = document.getElementById('order');
 //let cart = JSON.parse(localStorage.getItem("panier"));
 let cart = getCart();
@@ -61,6 +60,9 @@ let cart = getCart();
 //Écouter l'événement du click pour commander
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
+
+    //Créer une variable de l'api "products/order"
+    //let apiUrlOrder = 'http://localhost:3000/api/products/order'
 
     if (firstNameError.innerHTML !== "" || lastNameError.innerHTML !== "" || addressError.innerHTML !== "" || cityError.innerHTML !== "" || emailError.innerHTML !== "") {
         alert('Veuillez remplir correctement le formulaire')
@@ -75,7 +77,6 @@ submitBtn.addEventListener('click', (e) => {
         for(let i = 0; i < cart.length; i++) {
             cartItems.push(cart[i].id)
         }
-
         let order = {
             contact: {
                 firstName: firstName.value,
@@ -85,30 +86,64 @@ submitBtn.addEventListener('click', (e) => {
                 email: email.value
             },
             items: cartItems,
-        };
+        }
+        //send();
 
-        //Créer une variable pour envoyer les données avec la méthode POST
-        const dataSend = {
-            method: "post",
+        //Créer une fonction qui renvoie la requête post(pour envoyer la commande)
+        //function send() {
+        let sendData = fetch("http://localhost:3000/api/products/order", {
+            method: "POST",
             body: JSON.stringify(order),
             headers: {
+                //accept: "application/json",
                 "Content-Type": "application/json",
-                accept: "application/json"
             },
-        };
-
-        //Requêter l'API et la méthode POST
-        fetch(apiUrlOrder, dataSend)
-            .then((res) => res.json())
-            .then((data) => {
-                localStorage.clear();
-                window.location.href = "confirmation.html?orderId=" + data.orderId;
+        })
+        console.log(sendData)
+            //Récupérer et stocker la réponse de l'API (orderId)
+            /*.then(res => {
+                return res.json();
             })
-            .catch(() => {
-                alert('Une erreur est survenue');
-            });
-    
+            .then((server) => {
+                const orderId = server.orderId;
+                //Si l'orderId a bien été récupérer, diriger l'utilisateur vers la page confirmation
+                if(orderId != "") {
+                    location.href = "confirmation.html?orderid=" + orderId;
+                };
+            });*/
+        //};
     } else {
         return false;
     };
 });
+
+
+
+
+
+
+// TEST
+    /*//Créer une variable pour envoyer les données avec la méthode POST
+    function sendData(data) {
+        //Requêter l'API et la méthode POST
+
+        fetch(apiUrlOrder, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                //accept: "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then((order) => {
+            //localStorage.clear();
+            window.location.href = "confirmation.html?orderId=" + order.orderId;
+        })
+        .catch(() => {
+            alert('Une erreur est survenue');
+        });
+    
+    };*/
+    
+
