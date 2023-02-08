@@ -7,7 +7,6 @@ const address = document.querySelector('#address');
 const city = document.querySelector('#city');
 const email = document.querySelector('#email');
 
-
 // Déclarer les variables pour les erreurs de chaque input du formulaire
 const firstNameError = firstName.nextElementSibling;
 const lastNameError = lastName.nextElementSibling;
@@ -29,8 +28,8 @@ function controlForm() {
         } else {
             error.innerHTML = "La saisie est incorrecte";
             return false
-        }
-    }
+        };
+    };
 
     // Écouter les événements correspondant à chaque input
     firstName.addEventListener('change', function() {
@@ -56,21 +55,25 @@ controlForm();
 //Créer une variable de l'api "products/order"
 let apiUrlOrder = 'http://localhost:3000/api/products/order'
 let submitBtn = document.getElementById('order');
-//let basket = JSON.parse(localStorage.getItem("panier"));
+//let cart = JSON.parse(localStorage.getItem("panier"));
+let cart = getCart();
 
+//Écouter l'événement du click pour commander
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    if (firstName.value == "" || lastName.value == "" || address.value == "" || city.value == "" || email.value == "") {
+    if (firstNameError.innerHTML !== "" || lastNameError.innerHTML !== "" || addressError.innerHTML !== "" || cityError.innerHTML !== "" || emailError.innerHTML !== "") {
+        alert('Veuillez remplir correctement le formulaire')
+    } else if(firstName.value == "" || lastName.value == "" || address.value == "" || city.value == "" || email.value == "") {
         alert('Veuillez remplir le formulaire')
-    } else if (basket == "" || basket.length == 0) {
-        alert('Veuillez sélectionner des produits')
+    } else if (cart == "" || cart.length == 0) {
+        alert('Votre panier est vide. Veuillez sélectionner des produits')
         window.location.href = "index.html";
     } else if (confirm("Voulez-vous confirmer votre commande ?") == true) {
-        let basketList = []; 
+        let cartItems = []; 
         
-        for(let i = 0; i < basket.length; i++) {
-            basketList.push(basket[i].id)
+        for(let i = 0; i < cart.length; i++) {
+            cartItems.push(cart[i].id)
         }
 
         let order = {
@@ -81,7 +84,7 @@ submitBtn.addEventListener('click', (e) => {
                 city: city.value,
                 email: email.value
             },
-            items: basketList,
+            items: cartItems,
         };
 
         //Créer une variable pour envoyer les données avec la méthode POST
@@ -93,6 +96,7 @@ submitBtn.addEventListener('click', (e) => {
                 accept: "application/json"
             },
         };
+
         //Requêter l'API et la méthode POST
         fetch(apiUrlOrder, dataSend)
             .then((res) => res.json())
@@ -100,7 +104,7 @@ submitBtn.addEventListener('click', (e) => {
                 localStorage.clear();
                 window.location.href = "confirmation.html?orderId=" + data.orderId;
             })
-            .catch((error) => {
+            .catch(() => {
                 alert('Une erreur est survenue');
             });
     

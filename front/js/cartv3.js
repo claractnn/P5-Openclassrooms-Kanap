@@ -3,7 +3,7 @@ document.title = "Panier";
 
 //Initialiser la page en appelant les deux fonctions principales
 emptyCart();
-displayCart();
+displayItems();
 
 //La panier est vide
 function emptyCart() {
@@ -12,7 +12,7 @@ function emptyCart() {
     //Si le panier est vide, null ou undefined, afficher un message 
     if(cart == null || cart == [] || cart == "" || cart == undefined) {
         document.querySelector('h1').textContent = "Votre panier est vide !";
-    }
+    };
 };
 
 //Créer une fonction qui récupère les données du localstorage du panier
@@ -22,16 +22,7 @@ function getCart() {
         return [];
     } else {
         return JSON.parse(cart);
-    }
-};
-
-//Créer une fonction qui regroupe toutes les fonctions de l'affichage de la page panier
-function displayCart() {
-    displayItems();
-    itemToDelete();
-    changeQuantity();
-    totalQuantity();
-    totalPrice();
+    };
 };
 
 //Créer une fonction qui affiche tous les produits du panier
@@ -77,27 +68,28 @@ function displayItem(product, item) {
     </article>`;
     itemToDelete();
     changeQuantity();
+    totalQuantity();
+    totalPrice();
 };
-
 
 //Dynamiser la page en modifiant et supprimant les produits
 
-// Créer une fonction qui sera utilisée pour l'action de supprimer
+//Créer une fonction qui sera utilisée pour l'action de supprimer
 function itemToDelete() {
     let allErase = document.querySelectorAll('.deleteItem');
     for (let erase of allErase) {
         erase.addEventListener('click', () => removeItem(erase));
-    }
+    };
 };
 
-// Créer une fonction pour supprimer l'élément du DOM
+//Créer une fonction pour supprimer l'élément du DOM
 function removeItem(deleteDom) {
     let itemSelect = deleteDom.closest('.cart__item');
     itemSelect.remove();
     deleteItemFromCart(itemSelect);
 };
 
-// Créer une fonction pour supprimer l'élément du localstorage
+//Créer une fonction pour supprimer l'élément du localstorage
 function deleteItemFromCart(deleteItem) {
     let cart = getCart();
     cart = cart.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
@@ -106,15 +98,16 @@ function deleteItemFromCart(deleteItem) {
     window.location.reload();
 };
 
-// Modifier la quantité d'un élément
-// Créer une fonction qui sera utilisée pour l'action de changer la quantité
+//Modifier la quantité d'un élément
+//Créer une fonction qui sera utilisée pour l'action de changer la quantité
 function changeQuantity() {
     let allQty = document.querySelectorAll('.itemQuantity');
     for (let qty of allQty) {
         qty.addEventListener('change', () => changeQuantityToCart(qty));
-    }
+    };
 };
 
+//Créer une fonction qui modifie la quantité
 function changeQuantityToCart(qty) {
     let cartItem = qty.closest('.cart__item');
     // Récupérer les données du localstorage
@@ -124,13 +117,14 @@ function changeQuantityToCart(qty) {
     if (itemFound.quantity > 100 || itemFound.quantity < 1) {
         alert('Veuillez indiquer une quantité entre 1 et 100')
     } else {
-        // Sauvegarder le panier
+        //Sauvegarder le panier
         window.location.reload();
         window.localStorage.setItem('panier', JSON.stringify(cart));
         document.getElementById('totalQuantity').textContent = itemFound.quantity;
-    }
+    };
 };
 
+//Créer une fonction pour la quantité totale
 function totalQuantity() {  
     let cart = getCart();
     let totalQuantity = 0;
@@ -141,12 +135,13 @@ function totalQuantity() {
     document.getElementById('totalQuantity').textContent = totalQuantity;
 };
 
+//Créer une fonction pour le prix total
 function totalPrice() {
     let itemQuantity = document.querySelectorAll('.itemQuantity');
     let cartItems = document.querySelectorAll('.cart__item__content__description');
     let itemPrice = 0;
     for(let i = 0; i < cartItems.length; i++) {
         itemPrice += parseInt(cartItems[i].lastElementChild.textContent) * itemQuantity[i].value;
-    }
+    };
     document.getElementById('totalPrice').textContent = itemPrice;
 };
