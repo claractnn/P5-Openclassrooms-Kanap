@@ -1,3 +1,5 @@
+document.title = "Panier";
+
 //Initialiser la page en appelant les deux fonctions principales
 emptyCart();
 displayCart();
@@ -27,14 +29,16 @@ function displayCart() {
     displayItems();
     itemToDelete();
     changeQuantity();
-}
+    totalQuantity();
+    totalPrice();
+};
 
 //Créer une fonction qui affiche tous les produits du panier
 function displayItems() {
     let cart = getCart();
     for (let item of cart) {
         getItems(item)
-    }
+    };
 };
 
 //Créer une fonction qui requête l'API avec la méthode fetch 
@@ -61,8 +65,8 @@ function displayItem(product, item) {
         </div>
         <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
-                <p>Qté : ${item.quantity}</p>
-                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="">
+                <p>Qté : </p>
+                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${item.quantity}">
             </div>
             <div class="cart__item__content__settings__delete">
                 <p class="deleteItem">Supprimer</p>
@@ -70,9 +74,13 @@ function displayItem(product, item) {
         </div>
     </div>
     </article>`;
+    itemToDelete();
+    changeQuantity();
 };
 
+
 //Dynamiser la page en modifiant et supprimant les produits
+
 // Créer une fonction qui sera utilisée pour l'action de supprimer
 function itemToDelete() {
     let allErase = document.querySelectorAll('.deleteItem');
@@ -85,49 +93,47 @@ function itemToDelete() {
 function removeItem(deleteDom) {
     let itemSelect = deleteDom.closest('.cart__item');
     itemSelect.remove();
-    deleteItemFromBasket(itemSelect);
+    deleteItemFromCart(itemSelect);
 };
 
 // Créer une fonction pour supprimer l'élément du localstorage
-function deleteItemFromBasket(deleteItem) {
-    let basket = JSON.parse(window.localStorage.getItem("panier"));
-    basket = basket.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
+function deleteItemFromCart(deleteItem) {
+    let cart = getCart();
+    cart = cart.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
     // Sauvegarder le panier 
-    window.localStorage.setItem("panier", JSON.stringify(basket))
+    window.localStorage.setItem("panier", JSON.stringify(cart))
     window.location.reload();
 };
 
+// Modifier la quantité d'un élément
 // Créer une fonction qui sera utilisée pour l'action de changer la quantité
 function changeQuantity() {
     let allQty = document.querySelectorAll('.itemQuantity');
     for (let qty of allQty) {
         qty.addEventListener('change', () => changeQuantityToCart(qty));
     }
-    totalQuantity();
-    totalPrice();
 };
 
-// Créer une fonction qui modifie les quantités choisies par l'utilisateur
 function changeQuantityToCart(qty) {
     let cartItem = qty.closest('.cart__item');
     // Récupérer les données du localstorage
-    let basket = JSON.parse(window.localStorage.getItem("panier"));
-    let itemFound = basket.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
+    let cart = getCart(); 
+    let itemFound = cart.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
     itemFound.quantity = Number(qty.value);
     if (itemFound.quantity > 100 || itemFound.quantity < 1) {
         alert('Veuillez indiquer une quantité entre 1 et 100')
     } else {
         // Sauvegarder le panier
         window.location.reload();
-        window.localStorage.setItem('panier', JSON.stringify(basket));
+        window.localStorage.setItem('panier', JSON.stringify(cart));
         document.getElementById('totalQuantity').textContent = itemFound.quantity;
     }
 };
 
 function totalQuantity() {  
-    let basket = getBasket();
+    let cart = getCart();
     let totalQuantity = 0;
-    basket.forEach(addQuantityToTotal);
+    cart.forEach(addQuantityToTotal);
     function addQuantityToTotal(item) {   
         totalQuantity += item.quantity;
     };
@@ -143,4 +149,3 @@ function totalPrice() {
     }
     document.getElementById('totalPrice').textContent = itemPrice;
 };
-
