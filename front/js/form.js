@@ -90,7 +90,7 @@ submitBtn.addEventListener('click', (e) => {
         //send();
 
         //Créer une fonction qui renvoie la requête post(pour envoyer la commande)
-        //function send() {
+        
         let sendData = fetch("http://localhost:3000/api/products/order", {
             method: "POST",
             body: JSON.stringify(order),
@@ -99,19 +99,17 @@ submitBtn.addEventListener('click', (e) => {
                 "Content-Type": "application/json",
             },
         })
-        console.log(sendData)
             //Récupérer et stocker la réponse de l'API (orderId)
-            /*.then(res => {
+            .then(res => {
                 return res.json();
             })
             .then((server) => {
                 const orderId = server.orderId;
-                //Si l'orderId a bien été récupérer, diriger l'utilisateur vers la page confirmation
+                //Si l'orderId a bien été récupéré, diriger l'utilisateur vers la page confirmation
                 if(orderId != "") {
                     location.href = "confirmation.html?orderid=" + orderId;
                 };
-            });*/
-        //};
+            });
     } else {
         return false;
     };
