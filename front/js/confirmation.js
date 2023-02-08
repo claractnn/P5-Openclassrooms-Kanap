@@ -1,11 +1,12 @@
-//Affifhcer l'ID de la commande
+//Afficher l'ID de la commande
 
-function idOrder() {
+    const str = window.location
+    const url = new URL(str);
+    const id = url.searchParams.get("id");
+    const orderId = document.querySelector("#orderId");
+    orderId.innerHTML = id;
+    /*
     const params = new URLSearchParams(window.location.search);
-    const orderId = params.get("#orderId");
-
-    let displayOrderId = document.getElementById('orderId');
-    displayOrderId.innertext = orderId;
-};
-
-idOrder();
+    const id = params.get("id");
+    const orderId = document.querySelector('#orderId');
+    orderId.innerHTML = id;*/

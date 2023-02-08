@@ -44,13 +44,18 @@ function displayBasket() {
 // Afficher les produits 
 function displayBasketList() {
     let basket = getBasket();
+    for(let i = 0; i < basket.length; i++) {
+        const id = basket[i].id
         let params = (new URL(document.location)).searchParams;
-        const id = params.get('id');
-        // const apiUrl = 'http://localhost:3000/api/products/' + id;
-        fetch('http://localhost:3000/api/products/' + id) 
+        const selectId = params.get('id');
+        selectId = id
+    }
+        const apiUrl = 'http://localhost:3000/api/products/' + id;
+        fetch(apiUrl) 
             .then(res => res.json())
             .then((data) => {
-                displayBasketDetails(data)
+                displayBasketDetails(data);
+                console.log(data);
             })
             .catch(() => document.querySelector('h1').textContent = 'Le serveur est momentanément indisponible');    
         };
