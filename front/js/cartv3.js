@@ -1,3 +1,4 @@
+//Renommer le titre de la page 
 document.title = "Panier";
 
 //Initialiser la page en appelant les deux fonctions principales
