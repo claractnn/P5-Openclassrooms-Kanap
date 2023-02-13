@@ -1,5 +1,4 @@
-// RÉCUPÉRER L'ID DU PRODUIT DANS L'URL
-
+// Récupérer l'id du produit dans l'url
 // Créer une nouvelle URL à partir de l'URL donnée et ajouter searchParams pour manipuler les paramètres de requête d'URL 
 let params = (new URL(document.location)).searchParams;
 
@@ -28,12 +27,8 @@ fetch(apiProductUrl)
 
         const parser = new DOMParser();
         const colors = document.getElementById('colors')
-
         for (i = 0; i < data.colors.length; i++) {
             colors.innerHTML += `<option value="${data.colors[i]}">${data.colors[i]}</option>`;
-            /*let productColors = `<option value="${data.colors[i]}">${data.colors[i]}</option>`;
-            const displayColors = parser.parseFromString(productColors, "text/html");
-            colors.appendChild(displayColors.body.firstChild);*/
         }
     })
     .catch(() => {
@@ -64,22 +59,7 @@ button.addEventListener("click", (event) => {
     // Définir la couleur et la quantité choisies à leurs valeurs respectives
     let color = colorValue();
     let quantity = quantityValue();
-
-    // Ajouter des conditions si les options du produit n'ont pas été choisies
-    if (color == '') {
-        alert('Veuillez sélectionner une couleur')
-    } else if (quantity < 1 || quantity == NaN) {
-        alert('Veuillez indiquer un nombre d\'articles')
-    } else if (quantity > 100) {
-        alert('Veuillez indiquer un nombre d\'articles inférieur à 100')
-    } /*else if (quantity == 1) {
-        alert('Votre produit a bien été ajouté au panier !')
-        goToCart();
-    } else if (quantity > 1 && quantity <= 100) {
-        alert('Vos produits ont bien été ajoutés au panier !')
-        goToCart();
-    }*/
-    // Créer un objet pour le panier
+    // Créer un objet du produit pour le panier (id, couleur et quantité)
     const product = {
         id: id,
         color: color,
@@ -96,35 +76,30 @@ button.addEventListener("click", (event) => {
         const basketFiltered = basket.filter(p => p.id === product.id && p.color === product.color);
         const productFound = basketFiltered[0];
             if (productFound) {
-                // si le produit est trouvé, on ajoute la nouvelle quantité sélectionnée à l'existante
+                // Si le produit est trouvé, on ajoute la nouvelle quantité sélectionnée à l'existante
                 productFound.quantity += product.quantity;
-                if (quantity > 100){    
-                    quantity = 100;
-                    alert('La quantité du produit choisi a été réduite à 100');
-                } else {
-                    alert('Produit(s) ajouté(s) au panier !');
-                }
-            } else {
-                // Sinon on ajoute le produit sélectionné au tableau du panier
+            // Si le produit et inférieur à 100 ou supérieur à 1, on ajoute le produit 
+            } else if (quantity <= 100 || quantity > 1) {
                 basket.push(product);
-                alert('Produit(s) ajouté(s) au panier !')
-            }
+                //Message à l'utilisateur pour lui indiquer que le(s) produit(s) a ou ont bien été ajouté(s) au panier
+                alert(`Produit(s) ajouté(s) au panier !`);
+            } else if (quantity > 100 || quantity < 1) {
+                //Message d'alerte pour notifier que la quantité choisie doit se trouver entre 1 et 100 inclus
+                alert(`La quantité choisie doit se trouver entre 1 et 100 inclus`);
+            } else if (color == null || color == "") {
+                alert(`Veuillez choisir une couleur`)
+            } else {
+                //Message d'alerte pour notifier que la quantité choisie doit se trouver entre 1 et 100 inclus
+                alert(`La quantité choisie doit se trouver entre 1 et 100 inclus`);
+            } 
+        //Redirection automatique vers la page panier
+        goToCart();
+        //Sauvegarder le panier
         window.localStorage.setItem("panier", JSON.stringify(basket));
+        
         };
     });
-    /* else {
-            for (let i = 0; i < basket.length; i++) {
-                const productFound = basket[0];
-                console.log(basket[0])
-            }
-            if(product.id == basket[0].id && product.color == basket[0].color) {
-                productFound = true
-                productFound.quantity += product.quantity;
-            } else {
-                basket.push(product);
-            }
-            window.localStorage.setItem("panier", JSON.stringify(basket));
-        } */
+
 
 
 

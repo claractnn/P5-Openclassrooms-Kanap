@@ -27,6 +27,10 @@ function getCart() {
     };
 };
 
+function saveCart(cart) {
+    window.localStorage.setItem('panier', JSON.stringify(cart));
+};
+
 //Créer une fonction qui affiche tous les produits du panier
 function displayItems() {
     let cart = getCart();
@@ -121,7 +125,7 @@ function changeQuantityToCart(qty) {
     } else {
         //Sauvegarder le panier
         window.location.reload();
-        window.localStorage.setItem('panier', JSON.stringify(cart));
+        saveCart(cart);
     };
     //document.getElementById('totalQuantity').textContent = itemFound.quantity;
 };
