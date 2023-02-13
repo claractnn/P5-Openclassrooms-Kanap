@@ -15,8 +15,6 @@ const priceElement = document.getElementById('price');
 const descriptionElement = document.getElementById('description');
 const colorsElement = document.getElementById('colors');
 
-// **** variable pour altTxt et imageUrl ? ****
-
 // Créer la bonne Url pour chaque produit en interrogeant l'API
 fetch(apiProductUrl) 
     .then(response => response.json())
@@ -42,9 +40,7 @@ fetch(apiProductUrl)
         alert("Le serveur ne répond plus");
     });
 
-    
 // AJOUT DES PRODUITS DANS LE PANIER
-
 // Créer deux fonctions pour retourner les valeurs respectives des éléments (produits)
 function colorValue() {
     let color = document.getElementById("colors");
@@ -61,14 +57,6 @@ function goToCart() {
     window.location.href='cart.html';
 }
 
-/* // Définir les éléments d'un produit sélectionné par l'utilisateur
-let selectColor = document.getElementById("colors");
-let selectQuantity = document.getElementById('quantity');
-
-// Modifier le tableau en ajoutant des eventlistener quand l'utilisateur choisi une couleur ou un nombre d'articles
-selectColor.addEventListener("input", e => color = e.target.value);
-selectQuantity.addEventListener("input", e => quantity = e.target.value); */
-
 // Créer une variable pour le bouton "ajouter au panier"
 const button = document.getElementById("addToCart");
 // Créer un eventListener pour le bouton "ajouter au panier"  
@@ -84,15 +72,13 @@ button.addEventListener("click", (event) => {
         alert('Veuillez indiquer un nombre d\'articles')
     } else if (quantity > 100) {
         alert('Veuillez indiquer un nombre d\'articles inférieur à 100')
-    } else if (quantity == 1) {
+    } /*else if (quantity == 1) {
         alert('Votre produit a bien été ajouté au panier !')
         goToCart();
-        //document.location.href('cart.html')
-    } else if (quantity > 1) {
+    } else if (quantity > 1 && quantity <= 100) {
         alert('Vos produits ont bien été ajoutés au panier !')
         goToCart();
-        //document.location.href('cart.html')
-    }
+    }*/
     // Créer un objet pour le panier
     const product = {
         id: id,
@@ -109,16 +95,23 @@ button.addEventListener("click", (event) => {
         // Verifier si le produit existe en parcourant le panier avec la boucle
         const basketFiltered = basket.filter(p => p.id === product.id && p.color === product.color);
         const productFound = basketFiltered[0];
-        if (productFound) {
-            // si le produit est trouvé, on ajoute la nouvelle quantité sélectionnée à l'existante
-            productFound.quantity += product.quantity;
-        } else {
-            // Sinon on ajoute le produit sélectionné au tableau du panier
-            basket.push(product);
-        }
+            if (productFound) {
+                // si le produit est trouvé, on ajoute la nouvelle quantité sélectionnée à l'existante
+                productFound.quantity += product.quantity;
+                if (quantity > 100){    
+                    quantity = 100;
+                    alert('La quantité du produit choisi a été réduite à 100');
+                } else {
+                    alert('Produit(s) ajouté(s) au panier !');
+                }
+            } else {
+                // Sinon on ajoute le produit sélectionné au tableau du panier
+                basket.push(product);
+                alert('Produit(s) ajouté(s) au panier !')
+            }
         window.localStorage.setItem("panier", JSON.stringify(basket));
-    } 
-    
+        };
+    });
     /* else {
             for (let i = 0; i < basket.length; i++) {
                 const productFound = basket[0];
@@ -133,6 +126,6 @@ button.addEventListener("click", (event) => {
             window.localStorage.setItem("panier", JSON.stringify(basket));
         } */
 
-});
+
 
    

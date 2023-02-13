@@ -12,6 +12,8 @@ function emptyCart() {
     //Si le panier est vide, null ou undefined, afficher un message 
     if(cart == null || cart == [] || cart == "" || cart == undefined) {
         document.querySelector('h1').textContent = "Votre panier est vide !";
+        document.getElementById('totalQuantity').innerHTML = `0`;
+        document.getElementById('totalPrice').innerHTML = `0`;
     };
 };
 
@@ -120,8 +122,8 @@ function changeQuantityToCart(qty) {
         //Sauvegarder le panier
         window.location.reload();
         window.localStorage.setItem('panier', JSON.stringify(cart));
-        document.getElementById('totalQuantity').textContent = itemFound.quantity;
     };
+    //document.getElementById('totalQuantity').textContent = itemFound.quantity;
 };
 
 //Créer une fonction pour la quantité totale

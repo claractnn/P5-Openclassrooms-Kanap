@@ -15,9 +15,9 @@ const cityError = city.nextElementSibling;
 const emailError = email.nextElementSibling;
 
 // Créer les RegExp 
-const nameCityRegExp = new RegExp(/^[a-zA-ZÀ-ÿ]+(['-]?[a-zA-ZÀ-ÿ]+)$/);
-const addressRegExp = new RegExp(/^[0-9]{1,3}[a-zA-ZÀ-ÿ \-,']+$/);
-const emailRegExp = new RegExp(/^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,10}$/);
+const nameCityRegExp = new RegExp(/^[a-zA-ZÀ-ÿ]+([ '-]?[a-zA-ZÀ-ÿ]+)$/);
+const addressRegExp = new RegExp(/^([0-9]{0,4}) ?[a-zA-ZÀ-ÿ \-,']+$/);
+const emailRegExp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[a-z]{2,10}$/);
 
 // Créer une fonction de contrôle du formulaire 
 function controlForm() {
@@ -61,9 +61,6 @@ let cart = getCart();
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
-    //Créer une variable de l'api "products/order"
-    //let apiUrlOrder = 'http://localhost:3000/api/products/order'
-
     if (firstNameError.innerHTML !== "" || lastNameError.innerHTML !== "" || addressError.innerHTML !== "" || cityError.innerHTML !== "" || emailError.innerHTML !== "") {
         alert('Veuillez remplir correctement le formulaire')
     } else if(firstName.value == "" || lastName.value == "" || address.value == "" || city.value == "" || email.value == "") {
@@ -85,8 +82,8 @@ submitBtn.addEventListener('click', (e) => {
                 city: city.value,
                 email: email.value
             },
-            items: cartItems,
-        }
+            products: cartItems,
+        };
         //send();
 
         //Créer une fonction qui renvoie la requête post(pour envoyer la commande)
@@ -109,6 +106,7 @@ submitBtn.addEventListener('click', (e) => {
                 if(orderId != "") {
                     location.href = "confirmation.html?orderid=" + orderId;
                 };
+                window.localStorage.clear();
             });
     } else {
         return false;
