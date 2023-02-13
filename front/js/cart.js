@@ -1,274 +1,154 @@
-// Récupérer les données à partir du local storage -- fonction pour récupérer les données du panier
-function getBasket() {
-    let basket = window.localStorage.getItem("panier");
-    if (!basket || basket == []) {
-        document.querySelector('h1').textContent = "Votre panier est vide";
+//Renommer le titre de la page 
+document.title = "Panier";
+
+//Initialiser la page en appelant les deux fonctions principales
+emptyCart();
+displayItems();
+
+//La panier est vide
+function emptyCart() {
+    //Récupérer les données du localstorage
+    let cart = getCart();
+    //Si le panier est vide, null ou undefined, afficher un message 
+    if(cart == null || cart == [] || cart == "" || cart == undefined) {
+        document.querySelector('h1').textContent = "Votre panier est vide !";
         document.getElementById('totalQuantity').innerHTML = `0`;
         document.getElementById('totalPrice').innerHTML = `0`;
+    };
+};
+
+//Fonction qui récupère les données du localstorage du panier
+function getCart() {
+    let cart = localStorage.getItem("panier");
+    if (cart == null || cart == [] || cart == "" || cart == undefined || cart.length == 0) {
         return [];
     } else {
-        return JSON.parse(basket);
-    }
-};
-let basket = getBasket();
-
-// Si le panier est vide, afficher un message d'erreur
-if (!basket || basket.length == 0) {
-    getBasket();
-    const parser = new DOMParser();
-    let cartSection = document.getElementById('cart__items');
-    let errorMessage = `<article class="cart__item"><p>Votre panier est vide !</p></article>`
-    const displayErrorMessage = parser.parseFromString(errorMessage, "text/html");
-    cartSection.appendChild(displayErrorMessage.body.firstChild);
-    // Sinon, afficher le panier avec la fonction 
-} else {
-    displayBasket(basket);
+        return JSON.parse(cart);
+    };
 };
 
+//Fonction pour sauvegarder le panier
+function saveCart(cart) {
+    window.localStorage.setItem('panier', JSON.stringify(cart));
+};
 
+//Fonction qui affiche tous les produits du panier
+function displayItems() {
+    let cart = getCart();
+    for (let item of cart) {
+        getItems(item)
+    };
+};
 
-// AFFICHER TOUS LES ÉLÉMENTS DÉTAILLÉS SUR LA PAGE PANIER
-// Créer une fonction async pour afficher correctement chaque élément du panier
-async function displayBasket() {
-    // Initialiser la quantité totale et le prix total en tant que nombre
-    //let totalQuantity = 0;
-    //let totalPrice = 0;
-    // Initialiser la section de la carte avec un contenu vide
-    let cartItems = '';
-    // Parcourir le tableau du panier
-    for (let i = 0; i < basket.length; i++) {
-        // Déclarer les variables des détails du produit 
-        let id = basket[i].id;
-        let color = basket[i].color;
-        let quantity = basket[i].quantity;
-        const apiProductUrl = 'http://localhost:3000/api/products/' + id;
-        // Requêter l'url du produit 
-        const response = await fetch(apiProductUrl);
-        // Si la requête a fonctionné, insérer tous les éléments du produit
-        if (response.ok) {
-            const data = await response.json();
-            const productDetails =
-            `<article class="cart__item" data-id="${id}" data-color="${color}">
-                <div class="cart__item__img">
-                    <img src="${data.imageUrl}" alt="${data.altTxt}">
-                </div>
-                <div class="cart__item__content">
-                    <div class="cart__item__content__description">
-                    <h2>${data.name}</h2>
-                    <p>${color}</p>
-                    <p>${data.price} €</p>
-                    </div>
-                    <div class="cart__item__content__settings">
-                    <div class="cart__item__content__settings__quantity">
-                        <p>Qté : </p>
-                        <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${quantity}">
-                    </div>
-                    <div class="cart__item__content__settings__delete">
-                        <p class="deleteItem">Supprimer</p>
-                    </div>
-                    </div>
-                </div>
-             </article>`;
-            //Ajouter les détails du produit dans la section de la cart (cart__item)
-            cartItems += productDetails;
-            // Ajouter la quantité choisie
-            //totalQuantity += parseInt(basket[i].quantity);
-            // Ajouter le prix et le multiplier par la quantité 
-            //totalPrice += data.price * basket[i].quantity;
-        }
-    }
-    // Afficher les détails du produit 
-    document.getElementById('cart__items').innerHTML = cartItems;
-    // Afficher la quantité et le prix totaux
-    // document.getElementById('totalQuantity').innerHTML = totalQuantity;
-    // document.getElementById('totalPrice').innerHTML = totalPrice;
+//Fonction qui requête l'API avec la méthode fetch 
+function getItems(item) {
+    let apiUrlItem = `http://localhost:3000/api/products/` + item.id;
+    fetch(apiUrlItem)
+        .then(response => response.json())
+        .then(product =>
+            displayItem(product, item))
+        .catch(() => document.querySelector('h1').textContent = 'Le serveur rencontre un problème')
+};
+
+//Fonction contenant le gabarit de l'affichage d'un produit
+function displayItem(product, item) {
+    document.getElementById('cart__items').innerHTML += `<article class="cart__item" data-id="${item.id}" data-color="${item.color}">
+    <div class="cart__item__img">
+        <img src="${product.imageUrl}" alt="${product.altTxt}">
+    </div>
+    <div class="cart__item__content">
+        <div class="cart__item__content__description">
+            <h2>${product.name}</h2>
+            <p>${item.color}</p>
+            <p>${product.price} €</p>
+        </div>
+        <div class="cart__item__content__settings">
+            <div class="cart__item__content__settings__quantity">
+                <p>Qté : </p>
+                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${item.quantity}">
+            </div>
+            <div class="cart__item__content__settings__delete">
+                <p class="deleteItem">Supprimer</p>
+            </div>
+        </div>
+    </div>
+    </article>`;
     itemToDelete();
     changeQuantity();
-    // window.location.reload();
-
-};
-
-// DYNAMISER LA PAGE (MODIFICATION QUANTITÉ ET SUPPRESSION ARTICLE)
-// Créer une fonction qui sera utilisée pour l'action de supprimer
-function itemToDelete() {
-    let allErase = document.querySelectorAll('.deleteItem');
-    for (let erase of allErase) {
-        erase.addEventListener('click', () => removeItem(erase));
-    }
-};
-
-// Créer une fonction pour supprimer l'élément du DOM
-function removeItem(deleteDom) {
-    let itemSelect = deleteDom.closest('.cart__item');
-    itemSelect.remove();
-    deleteItemFromBasket(itemSelect);
-};
-
-// Créer une fonction pour supprimer l'élément du localstorage
-function deleteItemFromBasket(deleteItem) {
-    let basket = JSON.parse(window.localStorage.getItem("panier"));
-    basket = basket.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
-    // Sauvegarder le panier 
-    window.localStorage.setItem("panier", JSON.stringify(basket))
-    window.location.reload();
-};
-
-
-// Modifier la quantité d'un élément
-// Créer une fonction qui sera utilisée pour l'action de changer la quantité
-
-function changeQuantity() {
-    let allQty = document.querySelectorAll('.itemQuantity');
-    for (let qty of allQty) {
-        qty.addEventListener('change', () => changeQuantityToCart(qty));
-    }
     totalQuantity();
     totalPrice();
 };
 
+//Dynamiser la page en modifiant et supprimant les produits
+
+//Fonction qui sera utilisée pour l'action de supprimer
+function itemToDelete() {
+    let allErase = document.querySelectorAll('.deleteItem');
+    for (let erase of allErase) {
+        erase.addEventListener('click', () => removeItem(erase));
+    };
+};
+
+//Fonction pour supprimer l'élément du DOM
+function removeItem(deleteDom) {
+    let itemSelect = deleteDom.closest('.cart__item');
+    itemSelect.remove();
+    deleteItemFromCart(itemSelect);
+};
+
+//Fonction pour supprimer l'élément du localstorage
+function deleteItemFromCart(deleteItem) {
+    let cart = getCart();
+    cart = cart.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
+    // Sauvegarder le panier 
+    window.localStorage.setItem("panier", JSON.stringify(cart))
+    window.location.reload();
+};
+
+//Modifier la quantité d'un élément
+//Fonction qui sera utilisée pour l'action de changer la quantité
+function changeQuantity() {
+    let allQty = document.querySelectorAll('.itemQuantity');
+    for (let qty of allQty) {
+        qty.addEventListener('change', () => changeQuantityToCart(qty));
+    };
+};
+
+//Fonction qui modifie la quantité
 function changeQuantityToCart(qty) {
     let cartItem = qty.closest('.cart__item');
     // Récupérer les données du localstorage
-    let basket = JSON.parse(window.localStorage.getItem("panier"));
-    let itemFound = basket.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
+    let cart = getCart(); 
+    let itemFound = cart.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
     itemFound.quantity = Number(qty.value);
     if (itemFound.quantity > 100 || itemFound.quantity < 1) {
         alert('Veuillez indiquer une quantité entre 1 et 100')
     } else {
-        // Sauvegarder le panier
+        //Sauvegarder le panier
         window.location.reload();
-        window.localStorage.setItem('panier', JSON.stringify(basket));
-        document.getElementById('totalQuantity').textContent = itemFound.quantity;
-    }
+        saveCart(cart);
+    };
+    //document.getElementById('totalQuantity').textContent = itemFound.quantity;
 };
 
+//Fonction pour la quantité totale
 function totalQuantity() {  
-    let basket = getBasket();
+    let cart = getCart();
     let totalQuantity = 0;
-    basket.forEach(addQuantityToTotal);
+    cart.forEach(addQuantityToTotal);
     function addQuantityToTotal(item) {   
         totalQuantity += item.quantity;
     };
     document.getElementById('totalQuantity').textContent = totalQuantity;
 };
 
+//Fonction pour le prix total
 function totalPrice() {
     let itemQuantity = document.querySelectorAll('.itemQuantity');
     let cartItems = document.querySelectorAll('.cart__item__content__description');
     let itemPrice = 0;
     for(let i = 0; i < cartItems.length; i++) {
         itemPrice += parseInt(cartItems[i].lastElementChild.textContent) * itemQuantity[i].value;
-    }
+    };
     document.getElementById('totalPrice').textContent = itemPrice;
 };
-
-// FORMULAIRE
-// Déclarer les variables de chaque input du formulaire
-const firstName = document.querySelector('#firstName');
-const lastName = document.querySelector('#lastName');
-const address = document.querySelector('#address');
-const city = document.querySelector('#city');
-const email = document.querySelector('#email');
-
-
-// Déclarer les variables pour les erreurs de chaque input du formulaire
-const firstNameError = firstName.nextElementSibling;
-const lastNameError = lastName.nextElementSibling;
-const addressError = address.nextElementSibling;
-const cityError = city.nextElementSibling;
-const emailError = email.nextElementSibling;
-
-// Créer les RegExp 
-const nameCityRegExp = new RegExp(/^[a-zA-ZÀ-ÿ]+(['-]?[a-zA-ZÀ-ÿ]+)$/);
-const addressRegExp = new RegExp(/^[0-9]{1,3}[a-zA-ZÀ-ÿ \-,']+$/);
-const emailRegExp = new RegExp(/^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,10}$/);
-
-// Créer une fonction de contrôle du formulaire 
-function controlForm() {
-    // Créer une fonction qui test l'expréssion régulière
-    function testRegExp(name, regExp, error) {
-        if(name.value.match(regExp)) {
-            error.innerHTML = "";
-        } else {
-            error.innerHTML = "La saisie est incorrecte";
-            return false
-        }
-    };
-
-    // Écouter les événements correspondant à chaque input
-    firstName.addEventListener('change', function() {
-        testRegExp(firstName, nameCityRegExp, firstNameError);
-    });
-    lastName.addEventListener('change', function() {
-        testRegExp(lastName, nameCityRegExp, lastNameError);
-    });
-    address.addEventListener('change', function() {
-        testRegExp(address, addressRegExp, addressError);
-    });
-    city.addEventListener('change', function() {
-        testRegExp(city, nameCityRegExp, cityError);
-    });
-    email.addEventListener('change', function() {
-        testRegExp(email, emailRegExp, emailError);
-    });
-};
-
-controlForm();
-
-//COMMANDE
-//Créer une variable de l'api "products/order"
-let apiUrlOrder = 'http://localhost:3000/api/products/order'
-let submitBtn = document.getElementById('order');
-//let basket = JSON.parse(localStorage.getItem("panier"));
-
-submitBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    if (firstName.value == "" || lastName.value == "" || address.value == "" || city.value == "" || email.value == "") {
-        alert('Veuillez remplir le formulaire')
-    } else if (basket == "" || basket.length == 0) {
-        alert('Veuillez sélectionner des produits')
-        window.location.href = "index.html";
-    } else if (confirm("Voulez-vous confirmer votre commande ?") == true) {
-        let basketList = []; 
-        
-        for(let i = 0; i < basket.length; i++) {
-            basketList.push(basket[i].id)
-        }
-
-        let order = {
-            contact: {
-                firstName: firstName.value,
-                lastName: lastName.value,
-                address: address.value,
-                city: city.value,
-                email: email.value
-            },
-            items: basketList,
-        };
-
-        //Créer une variable pour envoyer les données avec la méthode POST
-        const dataSend = {
-            method: "post",
-            body: JSON.stringify(order),
-            headers: {
-                "Content-Type": "application/json",
-                //accept: "application/json"
-            },
-        };
-        //Requêter l'API et la méthode POST
-        fetch(apiUrlOrder, dataSend)
-            .then((res) => res.json())
-            .then((data) => {
-                console.log(data);
-                window.location.href = "confirmation.html?orderId=" + data.orderId;
-                localStorage.clear();
-            })
-            .catch((error) => {
-                alert('Une erreur est survenue');
-            });
-    
-    } else {
-        return false;
-    };
-});
