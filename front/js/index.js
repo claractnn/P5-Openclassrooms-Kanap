@@ -1,8 +1,8 @@
-// Créer une variable de l'URL de l'API
+//Créer une variable de l'URL de l'API
 let apiUrl =
 'http://localhost:3000/api/products';
 
-// Requêter l'API pour l'ensemble des produits 
+//Requêter l'API pour l'ensemble des produits 
 fetch(apiUrl)
     .then((response) => response.json())
     .then((data) => {
@@ -13,7 +13,7 @@ fetch(apiUrl)
         alert("Impossible d'afficher les produits");
     });
 
-// Afficher tous les produits du catalogue sur la page index
+//Afficher tous les produits du catalogue sur la page index
 function displayProducts(data) {
     for (product of data) {
         const productCard = `

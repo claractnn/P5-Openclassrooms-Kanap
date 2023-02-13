@@ -1,25 +1,24 @@
-// FORMULAIRE
-// Déclarer les variables de chaque input du formulaire
-//const form = document.querySelector('.cart__order__form');
+//FORMULAIRE
+//Déclarer les variables de chaque input du formulaire
 const firstName = document.querySelector('#firstName');
 const lastName = document.querySelector('#lastName');
 const address = document.querySelector('#address');
 const city = document.querySelector('#city');
 const email = document.querySelector('#email');
 
-// Déclarer les variables pour les erreurs de chaque input du formulaire
+//Déclarer les variables pour les erreurs de chaque input du formulaire
 const firstNameError = firstName.nextElementSibling;
 const lastNameError = lastName.nextElementSibling;
 const addressError = address.nextElementSibling;
 const cityError = city.nextElementSibling;
 const emailError = email.nextElementSibling;
 
-// Créer les RegExp 
+//Créer les RegExp 
 const nameCityRegExp = new RegExp(/^[a-zA-ZÀ-ÿ]+([ '-]?[a-zA-ZÀ-ÿ]+)$/);
 const addressRegExp = new RegExp(/^([0-9]{0,4}) ?[a-zA-ZÀ-ÿ \-,']+$/);
 const emailRegExp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[a-z]{2,10}$/);
 
-// Créer une fonction de contrôle du formulaire 
+//Fonction de contrôle du formulaire 
 function controlForm() {
     // Créer une fonction qui test l'expréssion régulière
     function testRegExp(name, regExp, error) {
@@ -52,28 +51,30 @@ function controlForm() {
 controlForm();
 
 //COMMANDE
-
 let submitBtn = document.getElementById('order');
-//let cart = JSON.parse(localStorage.getItem("panier"));
 let cart = getCart();
 
 //Écouter l'événement du click pour commander
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-
+    //Si le message d'erreur existe (différent d'un contenu vide), avertir l'utilisateur qu'il y a une erreur
     if (firstNameError.innerHTML !== "" || lastNameError.innerHTML !== "" || addressError.innerHTML !== "" || cityError.innerHTML !== "" || emailError.innerHTML !== "") {
         alert('Veuillez remplir correctement le formulaire')
+    //Si les champs sont vides, avertir l'utilisateur
     } else if(firstName.value == "" || lastName.value == "" || address.value == "" || city.value == "" || email.value == "") {
         alert('Veuillez remplir le formulaire')
+    // Si le panier est vide, avertir l'utilisateur et rediriger vers la page d'accueil
     } else if (cart == "" || cart.length == 0) {
         alert('Votre panier est vide. Veuillez sélectionner des produits')
         window.location.href = "index.html";
+    //Si l'utilisateur confirme sa commande, créer un tableau contenant les informations du ou des produits
     } else if (confirm("Voulez-vous confirmer votre commande ?") == true) {
         let cartItems = []; 
         
         for(let i = 0; i < cart.length; i++) {
             cartItems.push(cart[i].id)
         }
+        //Créer l'objet de la commande (contact + produit)
         let order = {
             contact: {
                 firstName: firstName.value,
@@ -84,15 +85,12 @@ submitBtn.addEventListener('click', (e) => {
             },
             products: cartItems,
         };
-        //send();
 
-        //Créer une fonction qui renvoie la requête post(pour envoyer la commande)
-        
+        //Fonction qui renvoie la requête post(pour envoyer la commande)
         let sendData = fetch("http://localhost:3000/api/products/order", {
             method: "POST",
             body: JSON.stringify(order),
             headers: {
-                //accept: "application/json",
                 "Content-Type": "application/json",
             },
         })
@@ -106,40 +104,11 @@ submitBtn.addEventListener('click', (e) => {
                 if(orderId != "") {
                     location.href = "confirmation.html?orderid=" + orderId;
                 };
+                //Vider le localstorage une fois que la commande est validée
                 window.localStorage.clear();
             });
     } else {
         return false;
     };
 });
-
-
-
-
-
-
-// TEST
-    /*//Créer une variable pour envoyer les données avec la méthode POST
-    function sendData(data) {
-        //Requêter l'API et la méthode POST
-
-        fetch(apiUrlOrder, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                //accept: "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .then((order) => {
-            //localStorage.clear();
-            window.location.href = "confirmation.html?orderId=" + order.orderId;
-        })
-        .catch(() => {
-            alert('Une erreur est survenue');
-        });
-    
-    };*/
-    
 

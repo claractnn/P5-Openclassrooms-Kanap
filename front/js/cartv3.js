@@ -17,7 +17,7 @@ function emptyCart() {
     };
 };
 
-//Créer une fonction qui récupère les données du localstorage du panier
+//Fonction qui récupère les données du localstorage du panier
 function getCart() {
     let cart = localStorage.getItem("panier");
     if (cart == null || cart == [] || cart == "" || cart == undefined || cart.length == 0) {
@@ -27,11 +27,12 @@ function getCart() {
     };
 };
 
+//Fonction pour sauvegarder le panier
 function saveCart(cart) {
     window.localStorage.setItem('panier', JSON.stringify(cart));
 };
 
-//Créer une fonction qui affiche tous les produits du panier
+//Fonction qui affiche tous les produits du panier
 function displayItems() {
     let cart = getCart();
     for (let item of cart) {
@@ -39,7 +40,7 @@ function displayItems() {
     };
 };
 
-//Créer une fonction qui requête l'API avec la méthode fetch 
+//Fonction qui requête l'API avec la méthode fetch 
 function getItems(item) {
     let apiUrlItem = `http://localhost:3000/api/products/` + item.id;
     fetch(apiUrlItem)
@@ -49,7 +50,7 @@ function getItems(item) {
         .catch(() => document.querySelector('h1').textContent = 'Le serveur rencontre un problème')
 };
 
-//Créer une fonction contenant le gabarit de l'affichage d'un produit
+//Fonction contenant le gabarit de l'affichage d'un produit
 function displayItem(product, item) {
     document.getElementById('cart__items').innerHTML += `<article class="cart__item" data-id="${item.id}" data-color="${item.color}">
     <div class="cart__item__img">
@@ -80,7 +81,7 @@ function displayItem(product, item) {
 
 //Dynamiser la page en modifiant et supprimant les produits
 
-//Créer une fonction qui sera utilisée pour l'action de supprimer
+//Fonction qui sera utilisée pour l'action de supprimer
 function itemToDelete() {
     let allErase = document.querySelectorAll('.deleteItem');
     for (let erase of allErase) {
@@ -88,14 +89,14 @@ function itemToDelete() {
     };
 };
 
-//Créer une fonction pour supprimer l'élément du DOM
+//Fonction pour supprimer l'élément du DOM
 function removeItem(deleteDom) {
     let itemSelect = deleteDom.closest('.cart__item');
     itemSelect.remove();
     deleteItemFromCart(itemSelect);
 };
 
-//Créer une fonction pour supprimer l'élément du localstorage
+//Fonction pour supprimer l'élément du localstorage
 function deleteItemFromCart(deleteItem) {
     let cart = getCart();
     cart = cart.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
@@ -105,7 +106,7 @@ function deleteItemFromCart(deleteItem) {
 };
 
 //Modifier la quantité d'un élément
-//Créer une fonction qui sera utilisée pour l'action de changer la quantité
+//Fonction qui sera utilisée pour l'action de changer la quantité
 function changeQuantity() {
     let allQty = document.querySelectorAll('.itemQuantity');
     for (let qty of allQty) {
@@ -113,7 +114,7 @@ function changeQuantity() {
     };
 };
 
-//Créer une fonction qui modifie la quantité
+//Fonction qui modifie la quantité
 function changeQuantityToCart(qty) {
     let cartItem = qty.closest('.cart__item');
     // Récupérer les données du localstorage
@@ -130,7 +131,7 @@ function changeQuantityToCart(qty) {
     //document.getElementById('totalQuantity').textContent = itemFound.quantity;
 };
 
-//Créer une fonction pour la quantité totale
+//Fonction pour la quantité totale
 function totalQuantity() {  
     let cart = getCart();
     let totalQuantity = 0;
@@ -141,7 +142,7 @@ function totalQuantity() {
     document.getElementById('totalQuantity').textContent = totalQuantity;
 };
 
-//Créer une fonction pour le prix total
+//Fonction pour le prix total
 function totalPrice() {
     let itemQuantity = document.querySelectorAll('.itemQuantity');
     let cartItems = document.querySelectorAll('.cart__item__content__description');
