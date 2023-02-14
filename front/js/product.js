@@ -25,7 +25,7 @@ const priceElement = document.getElementById('price');
 const descriptionElement = document.getElementById('description');
 const colorsElement = document.getElementById('colors');
 
-//Créer une fonction pour récupérer le panier du ls
+//Fonction pour récupérer le panier du ls
 function getCart() {
     let cart = localStorage.getItem("panier");
     if (cart == null || cart == [] || cart == "" || cart == undefined || cart.length == 0) {
