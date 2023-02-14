@@ -1,3 +1,6 @@
+//Renommer la page d'accueil
+document.title = "Page d'accueil";
+
 //Créer une variable de l'URL de l'API
 let apiUrl =
 'http://localhost:3000/api/products';
