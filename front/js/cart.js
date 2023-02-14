@@ -80,7 +80,6 @@ function displayItem(product, item) {
 };
 
 //Dynamiser la page en modifiant et supprimant les produits
-
 //Fonction qui sera utilisée pour l'action de supprimer
 function itemToDelete() {
     let allErase = document.querySelectorAll('.deleteItem');
