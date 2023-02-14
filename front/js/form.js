@@ -1,12 +1,12 @@
-//FORMULAIRE
-//Déclarer les variables de chaque input du formulaire
+//Formulaire
+//Déterminer chaque input du formulaire
 const firstName = document.querySelector('#firstName');
 const lastName = document.querySelector('#lastName');
 const address = document.querySelector('#address');
 const city = document.querySelector('#city');
 const email = document.querySelector('#email');
 
-//Déclarer les variables pour les erreurs de chaque input du formulaire
+//Déterminer les erreurs de chaque input du formulaire
 const firstNameError = firstName.nextElementSibling;
 const lastNameError = lastName.nextElementSibling;
 const addressError = address.nextElementSibling;
@@ -18,9 +18,9 @@ const nameCityRegExp = new RegExp(/^[a-zA-ZÀ-ÿ]+([ '-]?[a-zA-ZÀ-ÿ]+)$/);
 const addressRegExp = new RegExp(/^([0-9]{0,4}) ?[a-zA-ZÀ-ÿ \-,']+$/);
 const emailRegExp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[a-z]{2,10}$/);
 
-//Fonction de contrôle du formulaire 
+//Fonction globale de contrôle du formulaire 
 function controlForm() {
-    // Créer une fonction qui test l'expréssion régulière
+    //Fonction qui teste l'expression régulière
     function testRegExp(name, regExp, error) {
         if(name.value.match(regExp)) {
             error.innerHTML = "";
@@ -30,7 +30,7 @@ function controlForm() {
         };
     };
 
-    // Écouter les événements correspondant à chaque input
+    //Écouter les événements correspondant à chaque input
     firstName.addEventListener('change', function() {
         testRegExp(firstName, nameCityRegExp, firstNameError);
     });
@@ -47,10 +47,9 @@ function controlForm() {
         testRegExp(email, emailRegExp, emailError);
     });
 };
-
 controlForm();
 
-//COMMANDE
+//Passer la commande
 let submitBtn = document.getElementById('order');
 let cart = getCart();
 
