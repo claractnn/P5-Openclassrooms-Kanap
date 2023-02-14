@@ -106,15 +106,15 @@ function addToCartClick() {
 };
 addToCartClick();
 
-//Fonction ajouter le produit dans le localstorage
+//Fonction ajouter le produit dans le localStorage
 function addToCart(product) {
     let cart = getCart();
     //Si le panier est vide, créer un tableau de l'objet produit
     if (!cart || cart.length === 0) {
         window.localStorage.setItem("panier", JSON.stringify([product]));
     } else {
-        //Filtrer pour savoir si un produit ayant le même id et la même couleur existe déjà dans le panier
-        const cartFiltered = cart.filter(item => item.id == product.id && item.color == product.color) 
+        //Sinon, filtrer pour savoir si un produit ayant le même id et la même couleur existe déjà dans le panier
+        const cartFiltered = cart.filter(item => item.id == product.id && item.color == product.color);
         const productFound = cartFiltered[0];
         //Si le produit existe, ajouter la quantité sélectionnée à la quantité déjà existante
         if (productFound != undefined) {
