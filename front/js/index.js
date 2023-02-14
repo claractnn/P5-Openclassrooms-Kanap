@@ -27,3 +27,4 @@ function displayProducts(data) {
           document.getElementById('items').innerHTML += productCard;
     }
 };
+

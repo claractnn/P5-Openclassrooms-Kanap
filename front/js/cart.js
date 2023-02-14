@@ -128,7 +128,6 @@ function changeQuantityToCart(qty) {
         window.location.reload();
         saveCart(cart);
     };
-    //document.getElementById('totalQuantity').textContent = itemFound.quantity;
 };
 
 //Fonction pour la quantité totale

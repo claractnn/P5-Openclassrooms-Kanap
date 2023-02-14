@@ -3,10 +3,9 @@
 // Créer une nouvelle URL à partir de l'URL donnée et ajouter searchParams pour manipuler les paramètres de requête d'URL 
 let params = (new URL(document.location)).searchParams;
 
-// Ajouter l'id à l'Url 
+//Ajouter l'id à l'Url 
 const id = params.get('id');
 const apiProductUrl = 'http://localhost:3000/api/products/' + id;
-console.log(apiProductUrl)
 getProduct();
 
 //Requête GET pour récupérer le produit via l'id
@@ -19,7 +18,7 @@ fetch(apiProductUrl)
     });
 };
 
-// Créer toutes les constantes du produit 
+//Créer toutes les constantes du produit 
 const imageElement = document.getElementsByClassName('item__img')[0];
 const titleElement = document.getElementById('title');
 const priceElement = document.getElementById('price');
@@ -35,11 +34,6 @@ function getCart() {
         return JSON.parse(cart);
     };
 };
-
-//Fonction pour sauvegarder le panier
-function saveCart() {
-    window.localStorage.setItem('panier', JSON.stringify(cart));
-}
 
 //Fonction pour afficher la page avec tous les éléments 
 function displayProduct(product) {
@@ -106,8 +100,6 @@ function addToCartClick() {
             addToCart(product);
             //Redirection automatique vers la page panier
             goToCart();
-            //Sauvegarder le panier
-            saveCart();
         }
     })
 };
@@ -135,5 +127,8 @@ function addToCart(product) {
             //Pousser le produit dans le panier
             cart.push(product);
         }
+        //Sauvegarder le panier dans le local storage
+        window.localStorage.setItem('panier', JSON.stringify(cart));
     }
 };
+
