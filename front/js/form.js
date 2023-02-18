@@ -14,7 +14,7 @@ const cityError = city.nextElementSibling;
 const emailError = email.nextElementSibling;
 
 //Créer les RegExp 
-const nameCityRegExp = new RegExp(/^[a-zA-ZÀ-ÿ]+([ '-]?[a-zA-ZÀ-ÿ]+)$/);
+const nameCityRegExp = new RegExp(/^[a-zA-ZÀ-ÿ]+([ '\-]?[a-zA-ZÀ-ÿ]+){1,5}$/);
 const addressRegExp = new RegExp(/^([0-9]{0,4}) ?[a-zA-ZÀ-ÿ \-,']+$/);
 const emailRegExp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[a-z]{2,10}$/);
 

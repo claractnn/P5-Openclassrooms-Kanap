@@ -4,6 +4,8 @@ document.title = "Panier";
 //Initialiser la page en appelant les deux fonctions principales
 emptyCart();
 displayItems();
+itemToDeleteEvent();
+changeQuantityEvent();
 
 //La panier est vide
 function emptyCart() {
@@ -36,12 +38,12 @@ function saveCart(cart) {
 function displayItems() {
     let cart = getCart();
     for (let item of cart) {
-        getItems(item)
+        getItem(item)
     };
 };
 
 //Fonction qui requête l'API avec la méthode fetch 
-function getItems(item) {
+function getItem(item) {
     let apiUrlItem = `http://localhost:3000/api/products/` + item.id;
     fetch(apiUrlItem)
         .then(response => response.json())
@@ -73,15 +75,12 @@ function displayItem(product, item) {
         </div>
     </div>
     </article>`;
-    itemToDelete();
-    changeQuantity();
-    totalQuantity();
-    totalPrice();
+    calculateTotals();
 };
 
 //Dynamiser la page en modifiant et supprimant les produits
 //Fonction qui sera utilisée pour l'action de supprimer
-function itemToDelete() {
+function itemToDeleteEvent() {
     let allErase = document.querySelectorAll('.deleteItem');
     for (let erase of allErase) {
         erase.addEventListener('click', () => removeItem(erase));
@@ -99,14 +98,14 @@ function removeItem(deleteDom) {
 function deleteItemFromCart(deleteItem) {
     let cart = getCart();
     cart = cart.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
-    // Sauvegarder le panier 
-    window.localStorage.setItem("panier", JSON.stringify(cart))
-    window.location.reload();
+    //Sauvegarder le panier 
+    saveCart(cart);
+    calculateTotals();
 };
 
 //Modifier la quantité d'un élément
 //Fonction qui sera utilisée pour l'action de changer la quantité
-function changeQuantity() {
+function changeQuantityEvent() {
     let allQty = document.querySelectorAll('.itemQuantity');
     for (let qty of allQty) {
         qty.addEventListener('change', () => changeQuantityToCart(qty));
@@ -124,8 +123,8 @@ function changeQuantityToCart(qty) {
         alert('Veuillez indiquer une quantité entre 1 et 100')
     } else {
         //Sauvegarder le panier
-        window.location.reload();
         saveCart(cart);
+        calculateTotals();
     };
 };
 
@@ -150,3 +149,8 @@ function totalPrice() {
     };
     document.getElementById('totalPrice').textContent = itemPrice;
 };
+
+function calculateTotals() {
+    totalQuantity();
+    totalPrice();
+}

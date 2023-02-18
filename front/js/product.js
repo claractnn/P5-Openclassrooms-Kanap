@@ -1,4 +1,3 @@
-
 // Récupérer l'id du produit dans l'url
 // Créer une nouvelle URL à partir de l'URL donnée et ajouter searchParams pour manipuler les paramètres de requête d'URL 
 let params = (new URL(document.location)).searchParams;
@@ -10,12 +9,12 @@ getProduct();
 
 //Requête GET pour récupérer le produit via l'id
 function getProduct() {
-fetch(apiProductUrl)
-    .then(res => res.json())
-    .then((product) => displayProduct(product))
-    .catch(() => {
-        document.getElementById('title').innerHTML = `Le serveur ne répond plus`
-    });
+    fetch(apiProductUrl)
+        .then(res => res.json())
+        .then((product) => displayProduct(product))
+        .catch(() => {
+            document.getElementById('title').innerHTML = `Le serveur ne répond plus`
+        });
 };
 
 //Créer toutes les constantes du produit 
@@ -43,35 +42,30 @@ function displayProduct(product) {
 
 //Fonction pour afficher le contenu du produit dans le DOM
 function displayProductDetails(product) {
-        document.title = product.name
-        imageElement.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
-        titleElement.innerHTML = `<h1>${product.name}</h1>`;
-        priceElement.innerHTML = `${product.price}`;
-        descriptionElement.innerHTML = `${product.description}`;
+    document.title = product.name
+    imageElement.innerHTML = `<img src="${product.imageUrl}" alt="${product.altTxt}">`;
+    titleElement.innerHTML = `<h1>${product.name}</h1>`;
+    priceElement.innerHTML = `${product.price}`;
+    descriptionElement.innerHTML = `${product.description}`;
 };
 
 //Fonction pour afficher les options de couleurs
 function displayColorsOptions(product) {
     const colors = document.getElementById('colors');
-        for (i = 0; i < product.colors.length; i++) {
-            colors.innerHTML += `<option value="${product.colors[i]}">${product.colors[i]}</option>`;
-        };
+    for (i = 0; i < product.colors.length; i++) {
+        colors.innerHTML += `<option value="${product.colors[i]}">${product.colors[i]}</option>`;
+    };
 };
 
-//Ajouter les produits dans le panier
 //Fonctions pour retourner les valeurs respectives des produits (couleur et quantité)
-function colorValue() {
-    let color = document.getElementById('colors');
-    return color.value
-};
-function quantityValue() {
-    let quantity = document.getElementById('quantity');
-    return quantity.value
+function inputValue(id) {
+    const input = document.getElementById(id);
+    return input.value
 };
 
 //Fonction de redirection à la page panier 
 function goToCart() {
-    window.location.href='cart.html';
+    window.location.href = 'cart.html';
 };
 
 //Définir la variable pour le bouton
@@ -80,8 +74,8 @@ const button = document.getElementById('addToCart');
 //Fonction ajouter le produit sélectionné quand on clique sur le bouton "Ajouter au panier" avec les conditons
 function addToCartClick() {
     button.addEventListener("click", (e) => {
-        let quantity = quantityValue();
-        let color = colorValue();
+        let quantity = inputValue('quantity');
+        let color = inputValue('colors');
         //Objet du produit
         const product = {
             id: id,
@@ -91,7 +85,7 @@ function addToCartClick() {
         //Si la couleur n'est pas sélectionnée, avertir l'utilisateur
         if (product.color == "" || product.color == null) {
             alert('Veuillez choisir une couleur');
-        //Si la quantité est supérieur à 100 ou inférieur à 1, avertir l'utilisateur
+            //Si la quantité est supérieur à 100 ou inférieur à 1, avertir l'utilisateur
         } else if (product.quantity > 100 || product.quantity < 1) {
             alert(`Le nombre d'articles doit être en 1 et 100 inclus`);
         } else {
