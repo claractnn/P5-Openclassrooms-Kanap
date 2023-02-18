@@ -4,7 +4,6 @@ document.title = "Panier";
 //Initialiser la page en appelant les deux fonctions principales
 emptyCart();
 displayItems();
-itemToDeleteEvent();
 changeQuantityEvent();
 
 //La panier est vide
@@ -76,6 +75,7 @@ function displayItem(product, item) {
     </div>
     </article>`;
     calculateTotals();
+    itemToDeleteEvent();
 };
 
 //Dynamiser la page en modifiant et supprimant les produits
