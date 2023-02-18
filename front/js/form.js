@@ -22,7 +22,7 @@ const emailRegExp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[a-z]{2,10}$/);
 function controlForm() {
     //Fonction qui teste l'expression régulière
     function testRegExp(name, regExp, error) {
-        if(name.value.match(regExp)) {
+        if (name.value.match(regExp)) {
             error.innerHTML = "";
         } else {
             error.innerHTML = "La saisie est incorrecte";
@@ -31,19 +31,19 @@ function controlForm() {
     };
 
     //Écouter les événements correspondant à chaque input
-    firstName.addEventListener('change', function() {
+    firstName.addEventListener('change', function () {
         testRegExp(firstName, nameCityRegExp, firstNameError);
     });
-    lastName.addEventListener('change', function() {
+    lastName.addEventListener('change', function () {
         testRegExp(lastName, nameCityRegExp, lastNameError);
     });
-    address.addEventListener('change', function() {
+    address.addEventListener('change', function () {
         testRegExp(address, addressRegExp, addressError);
     });
-    city.addEventListener('change', function() {
+    city.addEventListener('change', function () {
         testRegExp(city, nameCityRegExp, cityError);
     });
-    email.addEventListener('change', function() {
+    email.addEventListener('change', function () {
         testRegExp(email, emailRegExp, emailError);
     });
 };
@@ -59,18 +59,18 @@ submitBtn.addEventListener('click', (e) => {
     //Si le message d'erreur existe (différent d'un contenu vide), avertir l'utilisateur qu'il y a une erreur
     if (firstNameError.innerHTML !== "" || lastNameError.innerHTML !== "" || addressError.innerHTML !== "" || cityError.innerHTML !== "" || emailError.innerHTML !== "") {
         alert('Veuillez remplir correctement le formulaire')
-    //Si les champs sont vides, avertir l'utilisateur
-    } else if(firstName.value == "" || lastName.value == "" || address.value == "" || city.value == "" || email.value == "") {
+        //Si les champs sont vides, avertir l'utilisateur
+    } else if (firstName.value == "" || lastName.value == "" || address.value == "" || city.value == "" || email.value == "") {
         alert('Veuillez remplir le formulaire')
-    // Si le panier est vide, avertir l'utilisateur et rediriger vers la page d'accueil
+        // Si le panier est vide, avertir l'utilisateur et rediriger vers la page d'accueil
     } else if (cart == "" || cart.length == 0) {
         alert('Votre panier est vide. Veuillez sélectionner des produits')
         window.location.href = "index.html";
-    //Si l'utilisateur confirme sa commande, créer un tableau contenant les informations du ou des produits
+        //Si l'utilisateur confirme sa commande, créer un tableau contenant les informations du ou des produits
     } else if (confirm("Voulez-vous confirmer votre commande ?") == true) {
-        let cartItems = []; 
-        
-        for(let i = 0; i < cart.length; i++) {
+        let cartItems = [];
+
+        for (let i = 0; i < cart.length; i++) {
             cartItems.push(cart[i].id)
         }
         //Créer l'objet de la commande (contact + produit)
@@ -100,7 +100,7 @@ submitBtn.addEventListener('click', (e) => {
             .then((server) => {
                 const orderId = server.orderId;
                 //Si l'orderId a bien été récupéré, diriger l'utilisateur vers la page confirmation
-                if(orderId != "") {
+                if (orderId != "") {
                     location.href = "confirmation.html?orderid=" + orderId;
                 };
                 //Vider le localstorage une fois que la commande est validée

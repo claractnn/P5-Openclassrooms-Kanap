@@ -4,14 +4,13 @@ document.title = "Panier";
 //Initialiser la page en appelant les deux fonctions principales
 emptyCart();
 displayItems();
-changeQuantityEvent();
 
 //La panier est vide
 function emptyCart() {
     //Récupérer les données du localstorage
     let cart = getCart();
     //Si le panier est vide, null ou undefined, afficher un message 
-    if(cart == null || cart == [] || cart == "" || cart == undefined) {
+    if (cart == null || cart == [] || cart == "" || cart == undefined) {
         document.querySelector('h1').textContent = "Votre panier est vide !";
         document.getElementById('totalQuantity').innerHTML = `0`;
         document.getElementById('totalPrice').innerHTML = `0`;
@@ -75,6 +74,7 @@ function displayItem(product, item) {
     </div>
     </article>`;
     calculateTotals();
+    changeQuantityEvent();
     itemToDeleteEvent();
 };
 
@@ -116,7 +116,7 @@ function changeQuantityEvent() {
 function changeQuantityToCart(qty) {
     let cartItem = qty.closest('.cart__item');
     // Récupérer les données du localstorage
-    let cart = getCart(); 
+    let cart = getCart();
     let itemFound = cart.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
     itemFound.quantity = Number(qty.value);
     if (itemFound.quantity > 100 || itemFound.quantity < 1) {
@@ -129,11 +129,11 @@ function changeQuantityToCart(qty) {
 };
 
 //Fonction pour la quantité totale
-function totalQuantity() {  
+function totalQuantity() {
     let cart = getCart();
     let totalQuantity = 0;
     cart.forEach(addQuantityToTotal);
-    function addQuantityToTotal(item) {   
+    function addQuantityToTotal(item) {
         totalQuantity += item.quantity;
     };
     document.getElementById('totalQuantity').textContent = totalQuantity;
@@ -144,7 +144,7 @@ function totalPrice() {
     let itemQuantity = document.querySelectorAll('.itemQuantity');
     let cartItems = document.querySelectorAll('.cart__item__content__description');
     let itemPrice = 0;
-    for(let i = 0; i < cartItems.length; i++) {
+    for (let i = 0; i < cartItems.length; i++) {
         itemPrice += parseInt(cartItems[i].lastElementChild.textContent) * itemQuantity[i].value;
     };
     document.getElementById('totalPrice').textContent = itemPrice;

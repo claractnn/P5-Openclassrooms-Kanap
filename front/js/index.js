@@ -2,8 +2,7 @@
 document.title = "Page d'accueil";
 
 //Créer une variable de l'URL de l'API
-let apiUrl =
-'http://localhost:3000/api/products';
+let apiUrl = 'http://localhost:3000/api/products';
 
 //Requêter l'API pour l'ensemble des produits 
 fetch(apiUrl)
@@ -27,7 +26,7 @@ function displayProducts(data) {
               <p class="productDescription">${product.description}</p>
             </article>
           </a>`;
-          document.getElementById('items').innerHTML += productCard;
+        document.getElementById('items').innerHTML += productCard;
     }
 };
 
