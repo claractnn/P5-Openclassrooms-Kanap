@@ -85,13 +85,13 @@ function addToCartClick() {
         //Si la couleur n'est pas sélectionnée, avertir l'utilisateur
         if (product.color == "" || product.color == null) {
             alert('Veuillez choisir une couleur');
-            //Si la quantité est supérieur à 100 ou inférieur à 1, avertir l'utilisateur
+        //Si la quantité est supérieur à 100 ou inférieur à 1, avertir l'utilisateur
         } else if (product.quantity > 100 || product.quantity < 1) {
             alert(`Le nombre d'articles doit être en 1 et 100 inclus`);
         } else {
             //Sinon - avertir l'utilisateur que les produits ont bien été ajoutés au panier
             //- ajouter le(s) produit(s) sélectionné(s), 
-            //- rediriger vers la page panier et 
+            //- rediriger vers la page panier 
             alert('Produit(s) ajouté(s) au panier !');
             addToCart(product);
             goToCart();
