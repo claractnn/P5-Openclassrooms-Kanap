@@ -1,5 +1,5 @@
-// Récupérer l'id du produit dans l'url
-// Créer une nouvelle URL à partir de l'URL donnée et ajouter searchParams pour manipuler les paramètres de requête d'URL 
+//Récupérer l'id du produit dans l'url
+//Créer une nouvelle URL à partir de l'URL donnée et ajouter searchParams pour manipuler les paramètres de requête d'URL 
 let params = (new URL(document.location)).searchParams;
 
 //Ajouter l'id à l'Url 
@@ -57,7 +57,7 @@ function displayColorsOptions(product) {
     };
 };
 
-//Fonctions pour retourner les valeurs respectives des produits (couleur et quantité)
+//Fonction pour retourner les valeurs respectives des produits (couleur et quantité) grâce à l'id
 function inputValue(id) {
     const input = document.getElementById(id);
     return input.value
@@ -89,7 +89,7 @@ function addToCartClick() {
         } else if (product.quantity > 100 || product.quantity < 1) {
             alert(`Le nombre d'articles doit être en 1 et 100 inclus`);
         } else {
-            //Sinon - avertir l'utilisateur que les produits ont bien été ajoutés
+            //Sinon - avertir l'utilisateur que les produits ont bien été ajoutés au panier
             //- ajouter le(s) produit(s) sélectionné(s), 
             //- rediriger vers la page panier et 
             alert('Produit(s) ajouté(s) au panier !');
@@ -107,15 +107,14 @@ function addToCart(product) {
     if (!cart || cart.length === 0) {
         window.localStorage.setItem("panier", JSON.stringify([product]));
     } else {
-        //Sinon, filtrer pour savoir si un produit ayant le même id et la même couleur existe déjà dans le panier
+        //Sinon, créer et retourner un nouveau tableau avec une fonction callback 
         const cartFiltered = cart.filter(item => item.id == product.id && item.color == product.color);
         const productFound = cartFiltered[0];
         //Si le produit existe, ajouter la quantité sélectionnée à la quantité déjà existante
         if (productFound != undefined) {
             productFound.quantity = productFound.quantity + product.quantity;
-            //Si la quantité du produit est supérieur à 100, la redéfinir à 100 et prévenir l'utilisateur
+            //Si la quantité du produit est supérieur à 100, avertir l'utilisateur
             if (productFound.quantity > 100) {
-                productFound.quantity = 100;
                 alert('La quantité totale ne doit pas dépasser 100');
             }
         } else {

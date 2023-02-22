@@ -89,7 +89,9 @@ function itemToDeleteEvent() {
 
 //Fonction pour supprimer l'élément du DOM
 function removeItem(deleteDom) {
+    //Cibler le produit à supprimer
     let itemSelect = deleteDom.closest('.cart__item');
+    //Retirer l'élément courant du DOM
     itemSelect.remove();
     deleteItemFromCart(itemSelect);
 };
@@ -97,9 +99,11 @@ function removeItem(deleteDom) {
 //Fonction pour supprimer l'élément du localstorage
 function deleteItemFromCart(deleteItem) {
     let cart = getCart();
+    //Créer et retourner un nouveau tableau avec une fonction callback
     cart = cart.filter(p => p.id != deleteItem.dataset.id || p.color != deleteItem.dataset.color);
     //Sauvegarder le panier 
     saveCart(cart);
+    //Mettre à jour la quantité et le prix totaux
     calculateTotals();
 };
 
@@ -114,16 +118,20 @@ function changeQuantityEvent() {
 
 //Fonction qui modifie la quantité
 function changeQuantityToCart(qty) {
+    //Cibler la quantité à changer
     let cartItem = qty.closest('.cart__item');
-    // Récupérer les données du localstorage
+    //Récupérer les données du localstorage
     let cart = getCart();
+    //Renvoyer la valeur du premier élément trouvé dans le tableau
     let itemFound = cart.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
     itemFound.quantity = Number(qty.value);
+    //Si la quantité trouvée est supérieur à 100 ou inférieur à , avertir l'utilisateur
     if (itemFound.quantity > 100 || itemFound.quantity < 1) {
         alert('Veuillez indiquer une quantité entre 1 et 100')
     } else {
         //Sauvegarder le panier
         saveCart(cart);
+        //Mettre à jour la quantité et le prix totaux
         calculateTotals();
     };
 };
@@ -131,7 +139,9 @@ function changeQuantityToCart(qty) {
 //Fonction pour la quantité totale
 function totalQuantity() {
     let cart = getCart();
+    //Initialiser la quantité totale à 0
     let totalQuantity = 0;
+    //Exécuter la fonction addQuantityToTotal sur chaque élément du panier
     cart.forEach(addQuantityToTotal);
     function addQuantityToTotal(item) {
         totalQuantity += item.quantity;
@@ -143,6 +153,7 @@ function totalQuantity() {
 function totalPrice() {
     let itemQuantity = document.querySelectorAll('.itemQuantity');
     let cartItems = document.querySelectorAll('.cart__item__content__description');
+    //Initialiser le prix du produit à 0
     let itemPrice = 0;
     for (let i = 0; i < cartItems.length; i++) {
         itemPrice += parseInt(cartItems[i].lastElementChild.textContent) * itemQuantity[i].value;
