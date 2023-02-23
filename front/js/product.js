@@ -73,6 +73,7 @@ const button = document.getElementById('addToCart');
 
 //Fonction ajouter le produit sélectionné quand on clique sur le bouton "Ajouter au panier" avec les conditons
 function addToCartClick() {
+    //Écouter l'événement du click
     button.addEventListener("click", (e) => {
         let quantity = inputValue('quantity');
         let color = inputValue('colors');

@@ -125,7 +125,7 @@ function changeQuantityToCart(qty) {
     //Renvoyer la valeur du premier élément trouvé dans le tableau
     let itemFound = cart.find(p => p.id == cartItem.dataset.id && p.color == cartItem.dataset.color);
     itemFound.quantity = Number(qty.value);
-    //Si la quantité trouvée est supérieur à 100 ou inférieur à , avertir l'utilisateur
+    //Si la quantité trouvée est supérieur à 100 ou inférieur à 1, avertir l'utilisateur
     if (itemFound.quantity > 100 || itemFound.quantity < 1) {
         alert('Veuillez indiquer une quantité entre 1 et 100')
     } else {
