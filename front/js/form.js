@@ -15,7 +15,7 @@ const emailError = email.nextElementSibling;
 
 //Créer les RegExp 
 const nameCityRegExp = new RegExp(/^[a-zA-ZÀ-ÿ]+([ '\-]?[a-zA-ZÀ-ÿ]+){1,5}$/);
-const addressRegExp = new RegExp(/^([0-9]{0,4}) ?[a-zA-ZÀ-ÿ \-,']+$/);
+const addressRegExp = new RegExp(/^([0-9]{0,5}) ?[a-zA-ZÀ-ÿ \-,']+([0-9]{0,5}) ?$/);
 const emailRegExp = new RegExp(/^[\w-\.]+@([\w-]+\.)+[a-z]{2,10}$/);
 
 //Fonction globale de contrôle du formulaire 
