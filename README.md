@@ -15,7 +15,7 @@ Kanap, une marque de canapés qui vend ses produits depuis sa boutique exclusive
 
 
 ## Installation
-- Il faut avoir Node et 'npm' d'installés localement sur votre ordinateur.
+- Il faut avoir Node et 'npm' d'installés localement sur l'ordinateur.
 - Depuis le dossier "back" du projet, éxécuter "npm install". 
 - Démarrer le serveur avec "node server" ou "nodemon server" (pour que le serveur s'actualise automatiquement)
 - Le serveur devrait être en marche sur "localhost" avec le port par défaut "3000"
