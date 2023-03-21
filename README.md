@@ -1,4 +1,4 @@
-#PROJET 5 OPENCLASSROOMS - Kanap
+# PROJET 5 OPENCLASSROOMS - Kanap
 
 ## Contexte
 Kanap, une marque de canapés qui vend ses produits depuis sa boutique exclusivement. Aujourd’hui, celle-ci souhaiterait avoir une plateforme de e-commerce en plus de sa boutique physique pour vendre ses produits sur Internet.
